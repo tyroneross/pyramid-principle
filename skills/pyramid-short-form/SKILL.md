@@ -1,7 +1,7 @@
 ---
 name: pyramid-short-form
 description: This skill should be used when the user asks to draft, outline, or structure short professional communication — "write an email", "draft a memo", "exec summary", "executive summary", "one-pager", "BLUF", "bottom line up front", "tl;dr this decision", "Slack update", "status note", "brief the team". Produces answer-first structured prose under ~500 words using a compressed SCQA intro (2–3 sentences) and a 3-point key line. Do NOT use this skill for multi-section reports or briefs (hand off to pyramid-long-form), for slide decks (pyramid-presentation), or for reviewing existing content (pyramid-audit).
-version: 0.1.0
+version: 0.1.1
 ---
 
 # Pyramid Short-Form
@@ -73,35 +73,64 @@ Short-form prefers exactly 3 peer supports. The cognitive basis: the mind groups
 - Mutually exclusive: no two peers describe the same underlying phenomenon
 - Collectively exhaustive: no significant peer is missing given the parent claim
 
+## Prose or Bullets? Choose by Structure
+
+Short-form supports render as either prose paragraphs or bullet points. The choice is not stylistic. It follows from how many peers the key line has and how independent they are.
+
+**Decision rule:**
+
+- **Prose** when the key line has 1–2 supports, or when supports flow sequentially and benefit from connective tissue. A short email with one main reason and a brief rationale reads better as paragraphs. Bullets fragment prose that is already scannable.
+- **Bullets** when the key line has 3–7 same-kind supports that are independently assertable. Especially when several supports need to stand on their own. Bullets expose the peer set structurally so the reader sees the shape of the argument at a glance.
+- **Hybrid** is the common middle ground. Open with one sentence stating the Answer, bullet the key line with complete-sentence supports, close with a sentence naming the next step.
+
+**Grounding in the Pyramid Principle.** The mind groups pre-sorted items of 3–7 most easily (`minto-p7-magical-number-seven`). Below that threshold, bulleting imposes structure on content that does not need it. Above the threshold, the set needs categorizing rather than flat bulleting, which in short-form usually means the artifact should be long-form instead. Every peer set, whether in prose or bullets, must still satisfy MECE and the plural-noun test (`minto-p96-mece`).
+
+**Bullet discipline, when bullets are chosen:**
+
+- Each bullet is a complete sentence with a subject, verb, and claim. Not a fragment. Not a noun phrase. A bullet reading "Cost reduction" is a topic label, not a support.
+- Each bullet answers the same implicit question raised by the Answer sentence above it. "Why should I agree?" or "How does this work?" or "What are the risks?"
+- Parallel grammar across the bullets in one set. All declarative sentences, or all imperative, or all subject-first. Do not mix.
+- Do not use bullets when you have only one or two supports. Two bullets look structurally impoverished; the prose version reads as confident.
+
+**Prose discipline, when prose is chosen:**
+
+- Each support is one short paragraph: 2–4 sentences, leading with the claim.
+- The first sentence of each paragraph is the point that paragraph proves. Evidence and elaboration follow.
+- Section transitions are implicit. Prose short-form is too compact for explicit "Next, ..." connectives.
+
 ## Output Shapes
 
-Four standard short-form shapes. Choose based on medium and purpose.
+Four standard short-form shapes. Choose based on medium and purpose. Within each shape, render supports as prose or bullets per the decision rule above.
 
 ### BLUF (Slack, IM, exec alert)
 
-For rapid reader decisions in 30 seconds or less. One sentence of answer, three bullets of support, stop.
+For rapid reader decisions in 30 seconds or less. Bullets almost always. The medium expects scanning, and the 3-point key line is precisely the case the bullet rule serves.
 
 ```
-[Answer sentence — the governing thought, full and declarative]
+[Answer sentence: the governing thought, full and declarative]
 
-- [Support 1]
-- [Support 2]
-- [Support 3]
+- [Support 1, complete sentence]
+- [Support 2, complete sentence]
+- [Support 3, complete sentence]
 ```
 
 No preamble. No sign-off. If context is genuinely needed, add one Complication sentence before the Answer.
 
 ### Exec Summary / One-Pager (email memo to leadership)
 
-Compressed SCQA → Answer → 3 paragraph supports → optional next step. Each support is one short paragraph (2–4 sentences). Total: ≤500 words.
+Compressed SCQA, Answer, 3 supports, optional next step. Total under 500 words. Support format depends on count and independence:
+
+- **1–2 supports**: render as prose paragraphs. Example: a recommendation email where the governing reason has one main justification and a short risk note.
+- **3–7 supports**: render as bullets, each a complete sentence. Example: an exec summary recommending a migration with three MECE reasons (cost, quality, risk profile).
+- **Hybrid**: opening sentence states the Answer, bullets expose the key line, closing sentence names the ask or next step. This is often the cleanest form for email.
 
 ### Decision Memo (short)
 
-Same shape as exec summary, but the Answer explicitly frames the recommended decision: "Recommend [X] because [governing reason]." Supports provide the top three reasons. Add one sentence flagging the trade-off accepted.
+Same shape as exec summary. The Answer explicitly frames the recommended decision: "Recommend [X] because [governing reason]." Supports follow the decision rule above. Add one sentence flagging the trade-off accepted.
 
 ### Status Update
 
-Structured form of SCQA: What's the state → What changed → What's next. Each move is one sentence or one short paragraph. Not a narrative. Not a brain dump. Each move answers its question and stops.
+Structured form of SCQA: What's the state, what changed, what's next. Each move is one sentence or one short paragraph. Not a narrative. Not a brain dump. Each move answers its question and stops. Status updates often fit the bullet rule when "what changed" and "what's next" have 3 or more items each.
 
 ## Drafting Workflow
 
@@ -116,13 +145,14 @@ Execute these steps in order. Do not assemble until step 5.
 
 ## Self-Check Before Returning
 
-Run these five gates before returning any output. Do not skip. For a full structural audit, direct to `pyramid-audit`.
+Run these six gates before returning any output. Do not skip. For a full structural audit, direct to `pyramid-audit`.
 
-1. **Answer in position** — Is the governing thought in the subject line or first body sentence? If it appears past the second sentence, move it.
-2. **Peers are MECE and same-kind** — Name the peer set with a plural noun. Does the noun accurately describe every peer? Do any two peers describe the same underlying thing?
-3. **SCQA does its job** — Does the opening establish a Situation, a Complication, and make the Answer's necessity obvious — even compressed to 2 sentences?
-4. **Every sentence earns its place** — Read each sentence and ask: "If this were deleted, would the reader have everything they need?" If yes, delete it.
-5. **First-sentence test** — If the reader only reads the first sentence, do they have the answer? If not, the governing thought is buried.
+1. **Answer in position.** Is the governing thought in the subject line or first body sentence? If it appears past the second sentence, move it.
+2. **Peers are MECE and same-kind.** Name the peer set with a plural noun. Does the noun accurately describe every peer? Do any two peers describe the same underlying thing?
+3. **SCQA does its job.** Does the opening establish a Situation, a Complication, and make the Answer's necessity obvious, even compressed to 2 sentences?
+4. **Prose-vs-bullets matches the peer count.** Did the shape follow the decision rule? 1–2 supports as prose, 3–7 as bullets, complete sentences either way.
+5. **Every sentence earns its place.** Read each sentence and ask: "If this were deleted, would the reader have everything they need?" If yes, delete it.
+6. **First-sentence test.** If the reader only reads the first sentence, do they have the answer? If not, the governing thought is buried.
 
 ## Common Short-Form Mistakes
 

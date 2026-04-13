@@ -45,7 +45,7 @@ Work through these five steps in order. Do not skip steps or reorder them.
 ### Step 1 — Identify the Governing Thought
 
 Locate the single most important claim the content makes — the apex of its pyramid. Check:
-- Is it stated? If not, mark as **not stated** and flag as a Blocker.
+- Is it stated? If not, mark as **not stated** and flag as a Strong checkpoint.
 - Is it stated early (first paragraph, first slide, subject line + opening sentence)? If buried past the midpoint, flag as Buried governing thought.
 - Does it directly answer the reader's question (inferred or stated)? If it answers a different question, flag the mismatch.
 
@@ -149,9 +149,9 @@ Produce the audit report in this exact structure. Do not add sections. Do not om
 
 **Deriving the Overall Verdict.** The verdict follows mechanically from the diagnostic findings, not editorial judgment:
 
-- **Restructure** — Governing Thought is "Not stated," OR SCQA has two or more Fails, OR any Blocker-severity violation appears in vertical/horizontal/ordering sections.
-- **Minor edits** — Governing Thought is stated but delayed, OR SCQA has one Fail, OR only Important/Nit violations appear.
-- **Share as-is** — Governing Thought is answer-first, SCQA is all Pass/Weak with at most one Weak, no Important-or-worse violations.
+- **Restructure** — Governing Thought is "Not stated," OR SCQA has two or more Fails, OR any Strong-checkpoint violation appears in vertical/horizontal/ordering sections.
+- **Minor edits** — Governing Thought is stated but delayed, OR SCQA has one Fail, OR only Guidance or Polish violations appear.
+- **Share as-is** — Governing Thought is answer-first, SCQA is all Pass/Weak with at most one Weak, no Guidance-or-stronger violations.
 
 **Mini-example — shape of a real audit output:**
 
@@ -159,7 +159,7 @@ Content audited: A two-paragraph memo recommending a vendor change. Paragraph 1 
 
 OVERALL VERDICT: **Restructure.** The memo has no governing thought, so the reader finishes it with no position to evaluate or act on.
 
-GOVERNING THOUGHT: Not stated. The memo describes a situation and gestures toward action but never asserts a claim. BLOCKER — the reader finishes the opening with no position to evaluate.
+GOVERNING THOUGHT: Not stated. The memo describes a situation and gestures toward action but never asserts a claim. Strong checkpoint. The reader finishes the opening with no position to evaluate.
 
 SCQA CHECK: Situation: Pass. Complication: Fail — no change or problem is introduced; the status quo is described but no tension is established. Question: Fail — no natural question arises from a static Situation. Answer: Fail — absent.
 
@@ -173,13 +173,15 @@ TOP 3 RANKED FIXES: 1. State the governing thought answer-first — the recommen
 
 ## Severity Ladder
 
-Classify every violation at one of three levels:
+Two primary tiers plus an optional polish tier. The framing is guidance-oriented, not adversarial. "Strong checkpoint" means something the author should address before sharing. "Guidance" means something worth considering but not required.
 
-**Blocker** — governing thought is false, missing, or answers the wrong question; or SCQA is broken enough that the reader cannot identify what the document argues. Renders the document structurally invalid regardless of how well other elements are written.
+**Strong checkpoint** — governing thought is false, missing, or answers the wrong question, or SCQA is broken enough that the reader cannot identify what the document argues. Renders the document structurally invalid regardless of how well other elements are written. Address before sharing.
 
-**Important** — a logic violation the reader will hit during normal reading: a vertical break, a non-MECE peer set, a mixed logic mode, a container label where an inference belongs. Degrades reader trust and comprehension without making the central argument unintelligible.
+**Guidance** — a logic violation the reader will hit during normal reading: a vertical break, a non-MECE peer set, a mixed logic mode, a container label where an inference belongs. Degrades reader trust and comprehension without making the central argument unintelligible. Worth considering.
 
-**Nit** — a polish-level issue: a slightly weak Situation, a thin inference label, a minor ordering inconsistency. Document is intelligible; the violation reduces precision or elegance. Raise nits only after Blockers and Importants.
+**Polish** (optional tier) — a minor issue: a slightly weak Situation, a thin inference label, a minor ordering inconsistency. Document is intelligible, but precision or elegance would improve. Raise polish notes only after Strong checkpoints and Guidance items are listed. Can be omitted if the audit is already actionable.
+
+Do not use "Blocker" as a severity label. Factual descriptions of real blocking conditions (a failing build, a deploy gate) remain appropriate; the preference here is about stylistic severity framing, not about descriptions of actual blockage.
 
 ## Source Citation Rule
 

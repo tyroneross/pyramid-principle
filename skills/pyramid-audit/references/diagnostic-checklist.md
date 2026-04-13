@@ -26,7 +26,7 @@ The governing thought is the apex of the pyramid: the single most important clai
 - The only place a claim appears is the conclusion — buried past the midpoint
 - The document title is a noun phrase ("Q3 Infrastructure Review") with no predicate
 
-**Severity:** Blocker if absent entirely. Important if present but weak (a claim that could be true under any circumstances).
+**Severity:** Strong checkpoint if absent entirely. Guidance if present but weak (a claim that could be true under any circumstances).
 
 ---
 
@@ -43,7 +43,7 @@ The governing thought is the apex of the pyramid: the single most important clai
 - The governing thought appears in a "conclusion" or "summary" section after all evidence
 - The opening paragraph is pure Situation with no Answer anywhere near it
 
-**Severity:** Important. Buried governing thought is one of the most common and high-impact violations — it forces the reader to hold all the evidence in memory before understanding what it supports.
+**Severity:** Guidance. Buried governing thought is one of the most common and high-impact violations — it forces the reader to hold all the evidence in memory before understanding what it supports.
 
 ---
 
@@ -60,7 +60,7 @@ The governing thought is the apex of the pyramid: the single most important clai
 - The reader's question is "is this approach viable?" but the governing thought recommends an unrelated action
 - The governing thought is so general ("We face significant challenges") that it could answer almost any question
 
-**Severity:** Blocker if the governing thought answers a fundamentally different question. Important if it partially addresses the question but with insufficient specificity.
+**Severity:** Strong checkpoint if the governing thought answers a fundamentally different question. Guidance if it partially addresses the question but with insufficient specificity.
 
 ---
 
@@ -77,7 +77,7 @@ The governing thought is the apex of the pyramid: the single most important clai
 - The governing thought is a statement of fact with no evaluative or directive implication
 - The governing thought uses hedging language that makes it unfalsifiable ("There are several factors worth considering")
 
-**Severity:** Blocker.
+**Severity:** Strong checkpoint.
 
 ---
 
@@ -102,7 +102,7 @@ Source authority for all SCQA checks: `minto-p22-scqa`.
 - The Situation is padded with history the reader already knows, consuming space that belongs to the Complication
 - The Situation is absent — the document opens directly with the Complication or the Answer
 
-**Severity:** Nit if padded. Important if absent when a shared Situation is genuinely needed to orient the reader. Nit if the reader clearly shares context and brevity is appropriate.
+**Severity:** Polish if padded. Guidance if absent when a shared Situation is genuinely needed to orient the reader. Polish if the reader clearly shares context and brevity is appropriate.
 
 ---
 
@@ -120,7 +120,7 @@ Source authority for all SCQA checks: `minto-p22-scqa`.
 - The Complication is actually a restatement of the Situation ("we've always had this challenge")
 - The Complication and Situation are blended in a single sentence ("We've been growing fast but are now facing a slowdown")
 
-**Severity:** Important when absent or blended. This is the most common and damaging SCQA failure — it removes the reader's motivation to engage with the Answer. Nit when present but vague rather than absent.
+**Severity:** Guidance when absent or blended. This is the most common and damaging SCQA failure — it removes the reader's motivation to engage with the Answer. Polish when present but vague rather than absent.
 
 ---
 
@@ -137,7 +137,7 @@ Source authority for all SCQA checks: `minto-p22-scqa`.
 - The document's Answer addresses a different question than the one the S and C raise
 - The Question is over-stated (long rhetorical framing) when context makes it obvious
 
-**Severity:** Important if the stated Question is wrong (answers a different reader question than what the content actually addresses). Nit if it is simply over-stated.
+**Severity:** Guidance if the stated Question is wrong (answers a different reader question than what the content actually addresses). Polish if it is simply over-stated.
 
 ---
 
@@ -154,7 +154,7 @@ Source authority for all SCQA checks: `minto-p22-scqa`.
 - The Answer is implied through a series of supporting points but never explicitly stated
 - The opening contains only Situation and Complication with no Answer — the Answer appears two pages later
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -179,7 +179,7 @@ Source authority: `minto-p17-vertical-qa`.
 - A heading states a conclusion, but the following paragraph provides background rather than justification
 - A claim raises "Why?" but the level below supplies a process description answering "How?"
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -196,7 +196,7 @@ Source authority: `minto-p17-vertical-qa`.
 - Level N states a recommendation; level N+1 describes the current state rather than justifying the recommendation
 - Level N raises a "Why?" question; level N+1 supplies steps (a "How?" answer)
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -213,7 +213,7 @@ Source authority: `minto-p17-vertical-qa`.
 - A supporting argument appears before the claim it supports has been made
 - The conclusion appears after a long section of unframed evidence (the reader doesn't know what the evidence is for)
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -230,7 +230,7 @@ Source authority: `minto-p17-vertical-qa`.
 - The document contains single-item "bullet points" that assert without elaborating
 - A recommendation is made but the rationale is absent
 
-**Severity:** Important if the hanging assertion is a key-line point. Nit if it is a minor sub-point.
+**Severity:** Guidance if the hanging assertion is a key-line point. Polish if it is a minor sub-point.
 
 ---
 
@@ -253,7 +253,7 @@ Source authorities: `minto-p96-mece`, `minto-p63-deduction-induction`.
 - The label used is "key points," "considerations," "items," or "things" — nouns that impose no constraint
 - Qualifying language is needed to include all members ("these are mostly risks, plus one recommendation")
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -270,7 +270,7 @@ Source authorities: `minto-p96-mece`, `minto-p63-deduction-induction`.
 - Two items describe the same phenomenon from different angles (e.g., "high churn" and "low retention")
 - A finding appears under two different section headings
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -287,7 +287,7 @@ Source authorities: `minto-p96-mece`, `minto-p63-deduction-induction`.
 - A grouping claims to cover all options but omits a widely-known alternative
 - The parent's scope claim ("all channels," "every stakeholder") is not matched by the list
 
-**Severity:** Important when a glaring omission is present. Nit when exhaustiveness is bounded and the omission is peripheral.
+**Severity:** Guidance when a glaring omission is present. Polish when exhaustiveness is bounded and the omission is peripheral.
 
 ---
 
@@ -304,7 +304,7 @@ Source authorities: `minto-p96-mece`, `minto-p63-deduction-induction`.
 - The parent summarizes a conclusion from a chain, but one item in the set is actually an independent supporting fact
 - The word "therefore" or "thus" appears mid-list, suggesting the list is actually a chain, but the list contains items before and after the conclusion
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -322,7 +322,7 @@ Source authorities: `minto-p96-mece`, `minto-p63-deduction-induction`.
 - Parent says "There are several factors" (true for any set of factors on any topic)
 - Parent says "Three things to consider" rather than "Three execution gaps that put Q3 at risk"
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -346,7 +346,7 @@ Source authority: `minto-p5-pyramid-sorting`.
 - A comparative ranking (e.g., options by risk) is not sorted by the ranking criterion
 - A structural decomposition (e.g., regional divisions) is not in a consistent spatial or categorical sequence
 
-**Severity:** Important if the ordering violation makes the parent summary inaccurate. Nit if the order is slightly inconsistent but the set type is clear.
+**Severity:** Guidance if the ordering violation makes the parent summary inaccurate. Polish if the order is slightly inconsistent but the set type is clear.
 
 ---
 
@@ -363,7 +363,7 @@ Source authority: `minto-p5-pyramid-sorting`.
 - A ranked list that begins with the highest-priority item, then includes lower-priority items out of rank order
 - A structural decomposition that follows organizational units for some items and geographic regions for others
 
-**Severity:** Important.
+**Severity:** Guidance.
 
 ---
 
@@ -380,7 +380,7 @@ Source authority: `minto-p5-pyramid-sorting`.
 - Options being evaluated (which should be comparative) are ordered by the time they were identified
 - An argument chain (which requires deductive order) is presented as a ranked list
 
-**Severity:** Nit-to-Important depending on whether the mis-ordered set creates reader confusion or merely looks inconsistent.
+**Severity:** Polish-to-Guidance depending on whether the mis-ordered set creates reader confusion or merely looks inconsistent.
 
 ---
 
@@ -403,7 +403,7 @@ Apply only when auditing reports, proposals, multi-section memos, or slide decks
 - Headings contain no verb or predicate
 - A heading could describe any set of children, regardless of what the children actually say
 
-**Severity:** Important for long-form documents where headings guide reader navigation. Nit for short-form where headings are primarily organizing devices.
+**Severity:** Guidance for long-form documents where headings guide reader navigation. Polish for short-form where headings are primarily organizing devices.
 
 ---
 
@@ -420,7 +420,7 @@ Apply only when auditing reports, proposals, multi-section memos, or slide decks
 - Headings at the same level represent different levels of the pyramid (one is a sub-point, another is a main point)
 - Grammatical form switches inconsistently within the same section level
 
-**Severity:** Nit.
+**Severity:** Polish.
 
 ---
 
