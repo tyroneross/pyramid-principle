@@ -1,0 +1,5 @@
+.DS_Store
+.bookmark/
+.claude/
+.claude-code-debugger/
+node_modules/
