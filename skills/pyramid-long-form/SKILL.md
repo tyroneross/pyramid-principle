@@ -1,6 +1,6 @@
 ---
 name: pyramid-long-form
-description: This skill should be used when the user asks to outline, draft, or restructure a long professional document — "structure this report", "outline a brief", "build the argument for a 20-page doc", "draft a research writeup", "organize this proposal", "write a strategy doc", "structure a whitepaper", "put this analysis in pyramid form", "key line for a report". Produces a full pyramid outline with nested key lines, section headings that assert their points, and explicit support trees from introduction through conclusion. Do NOT use this skill for short communication under ~500 words (hand off to pyramid-short-form), for slide decks (pyramid-presentation), or for critiquing existing content (pyramid-audit).
+description: Use when user asks to outline, structure, or restructure a long report, brief, proposal, whitepaper, strategy doc, or research writeup using the pyramid principle. Full nested key-line outline.
 version: 0.1.0
 ---
 

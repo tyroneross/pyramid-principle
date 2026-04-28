@@ -1,6 +1,6 @@
 ---
 name: pyramid-short-form
-description: This skill should be used when the user asks to draft, outline, or structure short professional communication — "write an email", "draft a memo", "exec summary", "executive summary", "one-pager", "BLUF", "bottom line up front", "tl;dr this decision", "Slack update", "status note", "brief the team". Produces answer-first structured prose under ~500 words using a compressed SCQA intro (2–3 sentences) and a 3-point key line. Do NOT use this skill for multi-section reports or briefs (hand off to pyramid-long-form), for slide decks (pyramid-presentation), or for reviewing existing content (pyramid-audit).
+description: Use when user asks to draft an email, memo, executive summary, one-pager, BLUF, Slack update, or status note using the pyramid principle. Answer-first prose under ~500 words with SCQA and key line.
 version: 0.1.1
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: pyramid-principle-core
-description: This skill should be used when the user asks about "pyramid principle", Barbara Minto's Pyramid Principle, or mentions "pyramid structure", "Minto", "SCQA", "situation complication question answer", "governing thought", "MECE", "key line", "deduction vs induction", "vertical and horizontal logic", "answer-first", "top-down structure", or wants the foundational rules of structured communication before drafting. Provides the canonical rule library — idea grouping, summarizing upward, ordering logic (deductive/chronological/structural/comparative), SCQA introductions, question/answer vertical logic, deductive vs inductive horizontal logic. Do NOT use this skill to draft a full artifact — hand off to pyramid-short-form, pyramid-long-form, or pyramid-presentation. Do NOT use for diagnostic review of existing writing — that is pyramid-audit's job.
+description: Use when user asks about pyramid principle, Minto, SCQA, MECE, governing thought, key line, vertical/horizontal logic, or answer-first structure. Canonical rule library for structured communication.
 version: 0.1.0
 ---
 

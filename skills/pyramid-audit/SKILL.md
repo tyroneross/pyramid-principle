@@ -1,6 +1,6 @@
 ---
 name: pyramid-audit
-description: This skill should be used when the user asks to critique, review, diagnose, or improve existing professional writing against Barbara Minto's Pyramid Principle — "audit this doc", "review this email", "is the structure sound", "does this follow MECE", "find structural problems in this memo", "why does this feel buried", "check my exec summary for pyramid violations", "does the deck match the pyramid principle". Produces a rule-by-rule diagnostic report with source-anchor citations and ranked fixes. Does NOT generate or draft new content — for drafting tasks hand off to pyramid-short-form, pyramid-long-form, or pyramid-presentation. Does NOT re-explain the Pyramid Principle itself — that is pyramid-principle-core's job.
+description: Use when user asks to audit, critique, review, or diagnose existing writing against the pyramid principle, Minto, MECE, or SCQA. Produces rule-by-rule findings with citations and ranked fixes.
 version: 0.1.0
 ---
 

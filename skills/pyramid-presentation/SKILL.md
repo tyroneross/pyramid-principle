@@ -1,6 +1,6 @@
 ---
 name: pyramid-presentation
-description: This skill should be used when the user asks to structure, storyline, or outline a presentation, deck, slides, or talk — "structure a deck", "build a storyline", "slide flow", "ghost deck", "deck outline", "presentation structure", "data story", "chart sequence", "pitch deck architecture", "board deck structure", "structure a talk". Produces a slide-by-slide storyline with assertion-style headlines, a governing thought stated in the opening slide, and per-section key lines. Do NOT use this skill to write prose reports (hand off to pyramid-long-form), for short emails and one-pagers (pyramid-short-form), or for critiquing existing decks (pyramid-audit).
+description: Use when user asks to structure, storyline, or outline a presentation, deck, slides, ghost deck, or talk using the pyramid principle. Produces slide-by-slide assertion headlines and key lines.
 version: 0.1.0
 ---
 
