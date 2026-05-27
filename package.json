@@ -1,0 +1,40 @@
+{
+  "name": "@tyroneross/pyramid-principle",
+  "version": "0.1.2",
+  "description": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit. Claude Code + Codex plugin.",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Tyrone Ross"
+  },
+  "homepage": "https://github.com/tyroneross/pyramid-principle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyroneross/pyramid-principle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tyroneross/pyramid-principle/issues"
+  },
+  "keywords": [
+    "writing",
+    "pyramid-principle",
+    "minto",
+    "communication",
+    "executive",
+    "audit",
+    "claude-code",
+    "codex",
+    "plugin"
+  ],
+  "files": [
+    ".claude-plugin/",
+    ".codex-plugin/",
+    "skills/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  }
+}

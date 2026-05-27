@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2025-2026 Tyrone Ross, Jr <46267523+tyroneross@users.noreply.github.com>
+# SPDX-License-Identifier: Apache-2.0
+name: Publish @tyroneross/pyramid-principle to GitHub Packages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run 'npm publish --dry-run' instead of publishing"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@tyroneross"
+          always-auth: true
+
+      - name: Verify tag matches package.json version
+        if: github.event_name == 'release'
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG" ]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match release tag ($TAG)"
+            exit 1
+          fi
+
+      - name: Verify plugin manifests are in sync
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          CLAUDE=$(jq -r .version .claude-plugin/plugin.json)
+          CODEX=$(jq -r .version .codex-plugin/plugin.json)
+          if [ "$PKG" != "$CLAUDE" ] || [ "$PKG" != "$CODEX" ]; then
+            echo "::error::version drift: package.json=$PKG .claude-plugin=$CLAUDE .codex-plugin=$CODEX"
+            exit 1
+          fi
+
+      - name: Publish (dry-run)
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --dry-run
+
+      - name: Publish
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish

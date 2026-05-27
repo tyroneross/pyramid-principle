@@ -1,0 +1,76 @@
+# SPDX-FileCopyrightText: 2025-2026 Tyrone Ross, Jr <46267523+tyroneross@users.noreply.github.com>
+# SPDX-License-Identifier: Apache-2.0
+name: Verify @tyroneross/pyramid-principle install
+
+on:
+  workflow_run:
+    workflows: ["Publish @tyroneross/pyramid-principle to GitHub Packages"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to verify (omit to use current package.json)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            V="${{ inputs.version }}"
+          else
+            V=$(node -p "require('./package.json').version")
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@tyroneross"
+          always-auth: true
+
+      - name: Wait for propagation
+        if: github.event_name == 'workflow_run'
+        run: sleep 45
+
+      - name: Sandbox install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/verify && cd /tmp/verify
+          npm init -y >/dev/null
+          npm install "@tyroneross/pyramid-principle@${{ steps.ver.outputs.version }}"
+
+          INSTALLED=$(jq -r .version node_modules/@tyroneross/pyramid-principle/package.json)
+          if [ "$INSTALLED" != "${{ steps.ver.outputs.version }}" ]; then
+            echo "::error::version drift: installed=$INSTALLED requested=${{ steps.ver.outputs.version }}"
+            exit 1
+          fi
+
+          for required in .claude-plugin/plugin.json .codex-plugin/plugin.json skills README.md LICENSE; do
+            if [ ! -e "node_modules/@tyroneross/pyramid-principle/$required" ]; then
+              echo "::error::Missing from installed package: $required"
+              exit 1
+            fi
+          done
+
+          FILE_COUNT=$(find node_modules/@tyroneross/pyramid-principle -type f | wc -l | tr -d ' ')
+          if [ "$FILE_COUNT" -lt 8 ]; then
+            echo "::error::Suspiciously small install — only $FILE_COUNT files"
+            exit 1
+          fi
+
+          echo "::notice::Verified @tyroneross/pyramid-principle@$INSTALLED — $FILE_COUNT files installed"

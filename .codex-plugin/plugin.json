@@ -1,0 +1,30 @@
+{
+  "name": "pyramid-principle",
+  "version": "0.1.2",
+  "description": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
+  "author": {
+    "name": "Tyrone Ross"
+  },
+  "repository": "https://github.com/tyroneross/pyramid-principle",
+  "license": "Apache-2.0",
+  "keywords": [
+    "writing",
+    "pyramid-principle",
+    "minto",
+    "communication",
+    "executive",
+    "audit"
+  ],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Pyramid Principle",
+    "shortDescription": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
+    "longDescription": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
+    "developerName": "Ross Labs",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ]
+  }
+}
