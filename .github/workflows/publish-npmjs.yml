@@ -1,0 +1,81 @@
+# SPDX-FileCopyrightText: 2025-2026 Tyrone Ross, Jr <46267523+tyroneross@users.noreply.github.com>
+# SPDX-License-Identifier: Apache-2.0
+name: Publish @tyroneross/pyramid-principle to npmjs
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run npm publish --dry-run instead of publishing"
+        required: false
+        default: "true"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.x"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - name: Verify release tag matches package.json version
+        if: github.event_name == 'release'
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG" ]; then
+            echo "::error::package.json version ($PKG_VERSION) does not match release tag ($TAG)"
+            exit 1
+          fi
+
+      - name: Verify plugin manifests are in sync
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          CLAUDE=$(jq -r .version .claude-plugin/plugin.json)
+          CODEX=$(jq -r .version .codex-plugin/plugin.json)
+          if [ "$PKG" != "$CLAUDE" ] || [ "$PKG" != "$CODEX" ]; then
+            echo "::error::version drift: package.json=$PKG .claude-plugin=$CLAUDE .codex-plugin=$CODEX"
+            exit 1
+          fi
+
+      - name: Verify package contents
+        run: npm pack --dry-run --registry https://registry.npmjs.org
+
+      - name: Publish dry run
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+        run: npm publish --dry-run --provenance --access public --registry https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npmjs with provenance
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
+        run: npm publish --provenance --access public --registry https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify npmjs provenance metadata
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
+        run: |
+          PKG=$(node -p "require('./package.json').name")
+          VER=$(node -p "require('./package.json').version")
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            PREDICATE=$(npm view "$PKG@$VER" dist.attestations.provenance.predicateType --json --registry https://registry.npmjs.org 2>/dev/null | tr -d '"')
+            if [ "$PREDICATE" = "https://slsa.dev/provenance/v1" ]; then
+              echo "Verified provenance predicate: $PREDICATE"
+              exit 0
+            fi
+            echo "Waiting for provenance metadata (attempt $attempt): ${PREDICATE:-missing}"
+            sleep 10
+          done
+          echo "::error::Provenance predicate missing or unexpected for $PKG@$VER"
+          exit 1
