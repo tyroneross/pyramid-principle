@@ -27,7 +27,6 @@ jobs:
           node-version: "24.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@tyroneross"
-          always-auth: true
           package-manager-cache: false
 
       - name: Verify tag matches package.json version

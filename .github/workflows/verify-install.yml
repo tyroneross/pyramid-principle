@@ -39,7 +39,6 @@ jobs:
           node-version: "20"
           registry-url: "https://npm.pkg.github.com"
           scope: "@tyroneross"
-          always-auth: true
 
       - name: Wait for propagation
         if: github.event_name == 'workflow_run'
