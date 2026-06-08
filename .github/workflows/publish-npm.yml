@@ -15,20 +15,20 @@ on:
 permissions:
   contents: read
   packages: write
-  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "24.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@tyroneross"
           always-auth: true
+          package-manager-cache: false
 
       - name: Verify tag matches package.json version
         if: github.event_name == 'release'
@@ -50,14 +50,33 @@ jobs:
             exit 1
           fi
 
-      - name: Publish (dry-run)
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+      - name: Prepare GitHub Packages metadata
+        run: |
+          npm pkg set publishConfig.registry=https://npm.pkg.github.com
+          npm pkg delete publishConfig.provenance
+
+      - name: Check if version already exists
+        id: existing
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish --dry-run
+        run: |
+          PKG=$(node -p "require('./package.json').name")
+          VER=$(node -p "require('./package.json').version")
+          if npm view "$PKG@$VER" version --registry https://npm.pkg.github.com >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "GitHub Packages already has $PKG@$VER"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish (dry-run)
+        if: steps.existing.outputs.exists != 'true' && github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --dry-run --registry https://npm.pkg.github.com
 
       - name: Publish
-        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
+        if: steps.existing.outputs.exists != 'true' && (github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'))
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish
+        run: npm publish --registry https://npm.pkg.github.com
