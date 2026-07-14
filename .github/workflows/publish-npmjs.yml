@@ -17,7 +17,11 @@ permissions:
   id-token: write
 
 jobs:
+  verify-manifests:
+    uses: tyroneross/RossLabs-AI-Toolkit/.github/workflows/verify-plugin-manifests.yml@plugin-ci-v1
+
   publish:
+    needs: verify-manifests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -35,16 +39,6 @@ jobs:
           TAG="${GITHUB_REF_NAME#v}"
           if [ "$PKG_VERSION" != "$TAG" ]; then
             echo "::error::package.json version ($PKG_VERSION) does not match release tag ($TAG)"
-            exit 1
-          fi
-
-      - name: Verify plugin manifests are in sync
-        run: |
-          PKG=$(node -p "require('./package.json').version")
-          CLAUDE=$(jq -r .version .claude-plugin/plugin.json)
-          CODEX=$(jq -r .version .codex-plugin/plugin.json)
-          if [ "$PKG" != "$CLAUDE" ] || [ "$PKG" != "$CODEX" ]; then
-            echo "::error::version drift: package.json=$PKG .claude-plugin=$CLAUDE .codex-plugin=$CODEX"
             exit 1
           fi
 

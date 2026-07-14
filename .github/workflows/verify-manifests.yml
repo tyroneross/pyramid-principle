@@ -8,4 +8,4 @@ on:
 
 jobs:
   verify-manifests:
-    uses: tyroneross/RossLabs-AI-Toolkit/.github/workflows/verify-plugin-manifests.yml@main
+    uses: tyroneross/RossLabs-AI-Toolkit/.github/workflows/verify-plugin-manifests.yml@plugin-ci-v1
