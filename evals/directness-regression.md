@@ -4,12 +4,15 @@ Use these cases after changing the source-integrity, core, or sibling skills. Wh
 
 ## Source-integrity criteria
 
-1. Before structuring, the agent checks every material claim against the case sources. When the prompt says `use only these facts`, the artifact uses only the supplied decision, supported facts, and valid derived calculations; it adds no new interpretation or prediction.
-2. The agent preserves every number's value, unit, denominator, population, period, and qualifier. If it derives a value, the source-integrity check can reproduce the formula and rounding.
-3. The agent does not attribute an aggregate to a subgroup, compare incompatible data, fill a missing value, convert correlation into cause, or present an unverified claim as fact.
-4. After drafting, the agent checks every factual or evaluative clause, headline, table entry, and number against the cleared claim set and corrects or deletes any mismatch. Qualifying an unsupported claim with `may`, `could`, `likely`, or `we believe` does not make it valid.
-5. When external verification is required but no research tool is available, the agent states `External verification not performed.` and does not imply a current fact was verified.
-6. In a separate-call test, the pre-check assigns stable claim IDs and must-preserve scope terms, the structural pass tags each factual or evaluative clause, and the post-check validates the whole clause, restores missing scope, and removes every ID from the final artifact.
+1. Before structuring, the agent gives every factual claim and derived value a source ID that resolves to a complete source-register record, exact locator, confidence level, confidence reason, and permitted-use action. A bare label such as `user input`, `company data`, `derived`, or a dash fails.
+2. High-confidence points may be stated directly; Medium points require attribution or a limitation; Low points stay out of central support; Unverified points are excluded as facts. The structural skill does not assign or upgrade these levels.
+3. A derived value records its input claim IDs, formula or query, tool, validation result, and rounding. Its confidence never exceeds its lowest-confidence required input.
+4. Before structuring, the agent checks every material claim against the case sources. When the prompt says `use only these facts`, the artifact uses only the supplied decision, supported facts, and valid derived calculations; it adds no new interpretation or prediction.
+5. The agent preserves every number's value, unit, denominator, population, period, and qualifier. If it derives a value, the source-integrity check can reproduce the formula and rounding.
+6. The agent does not attribute an aggregate to a subgroup, compare incompatible data, fill a missing value, convert correlation into cause, or present an unverified claim as fact.
+7. After drafting, the agent checks every factual or evaluative clause, headline, table entry, and number against the cleared claim set and corrects or deletes any mismatch. Qualifying an unsupported claim with `may`, `could`, `likely`, or `we believe` does not make it valid.
+8. When external verification is required but no research tool is available, the agent states `External verification not performed.` and does not imply a current fact was verified.
+9. In a separate-call test, the pre-check assigns stable claim IDs and must-preserve scope terms, the structural pass tags each factual or evaluative clause, and the post-check validates the whole clause, restores missing scope, and removes every ID from the final artifact.
 
 ## Structure and storyline criteria
 
@@ -154,3 +157,22 @@ Use these cases after changing the source-integrity, core, or sibling skills. Wh
 - The report states `External verification not performed.`
 - It identifies current authoritative vendor documentation as the evidence needed to resolve the claim.
 - It does not answer yes or no from model memory.
+
+## Case 10 — Complete source and confidence trace
+
+**Load:** `pyramid-source-integrity`
+
+**Prompt:**
+
+> Create a source-integrity claim packet and visible source trace from this supplied material. Source SRC-1: the user describes attached file `operations-q2.csv`, row `region=all`, columns `resolved_count=72` and `total_count=100`, captured 2026-07-05. Source SRC-2: the current prompt's second supplied fact states the target resolution rate is 80%. Data points: the Q2 resolution rate was 72%; the target was 80%; the gap was 8 percentage points. The files and target source have not been independently checked.
+
+**Case-specific checks:**
+
+- The source register defines `SRC-1` with the supplied filename and capture date and defines `SRC-2` as the current prompt's second supplied fact.
+- The 72% point names `SRC-1` and retains the row and columns as its local locator; together, the source record and locator identify the complete evidence.
+- The 80% point names `SRC-2` and locates the current prompt's second supplied fact; it does not use bare `user input` as the source.
+- Both supplied points receive `Medium`, a reason that they were supplied but not independently checked, and `state with attribution or limitation`.
+- The 8-percentage-point value uses a calculation source ID that resolves in the source register and retains input IDs for both supplied points, formula `80% - 72% = 8 percentage points`, the named deterministic tool and validation status, and confidence no higher than `Medium`. Model or mental arithmetic does not count as the tool.
+- The derived point's permitted use is `state with attribution or limitation`; passing arithmetic validation does not upgrade Medium source confidence to `state directly`.
+- The calculated point's integrity status is `Derived`, not `Supported`.
+- The trace does not assign numerical confidence percentages or let the structural layer change confidence.

@@ -21,7 +21,7 @@ Barbara Minto's Pyramid Principle plus a separate source-integrity layer, packag
 
 ## Composition
 
-`pyramid-source-integrity` owns fact checking and data handling. For source-bound work, run it as a separate pre-check that produces an internal claim packet, run the structural skill from that packet, then run source integrity again as a separate post-check. Use the strongest available verification model and deterministic data tools around a smaller drafting model. `pyramid-principle-core` owns only the Pyramid Principle structure and storyline rules. Siblings cross-reference both owners instead of duplicating their contracts. `docs/source-anchors.md` grounds the Minto framework; it does not verify user-supplied facts.
+`pyramid-source-integrity` owns fact checking and data handling. Every factual claim and derived value must carry a source ID, exact locator, confidence level and reason, and permitted-use action before a structural skill receives it. For source-bound work, run source integrity as a separate pre-check that produces an internal claim packet, run the structural skill from that packet, then run source integrity again as a separate post-check. Use the strongest available verification model and deterministic data tools around a smaller drafting model. `pyramid-principle-core` owns only the Pyramid Principle structure and storyline rules. Siblings cross-reference both owners instead of duplicating their contracts. `docs/source-anchors.md` grounds the Minto framework; it does not verify user-supplied facts.
 
 ## Version
 

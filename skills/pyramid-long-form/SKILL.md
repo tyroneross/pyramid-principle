@@ -29,7 +29,7 @@ Before structuring the document, the agent identifies:
 
 1. **Reader question:** What must the document answer?
 2. **Governing thought:** Which decision, recommendation, or finding did the user supply?
-3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the document to use?
+3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the document to use, and what source, confidence, and permitted-use record accompanies each data point?
 4. **Requested depth:** Outline, detailed outline, section draft, or full document?
 5. **Constraints:** Audience, length, tone, required sections, sensitivity, and citation format.
 
@@ -90,7 +90,7 @@ When the user requests prose, the agent:
 
 ## Use the Source-Integrity Handoff
 
-Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. This skill may select, group, order, nest, and express them; it must not change their numbers, scope, status, or certainty.
+Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. Follow each data point's permitted-use action. This skill may select, group, order, nest, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
 
 For a separate-call workflow, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output. If a section requires unsupported content, change the architecture or state the evidence limit.
 

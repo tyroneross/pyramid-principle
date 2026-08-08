@@ -32,7 +32,7 @@ Every sibling skill applies these rules before its medium-specific guidance:
 4. **The agent uses examples as structural patterns, not task content.** It does not copy an example's names, facts, scenario, terminology, or conclusion unless the user supplied them for the current task.
 5. **The agent returns the requested artifact by default.** It does not include framework labels, drafting notes, assumptions, or self-check commentary unless the user requests them or unresolved ambiguity prevents a reliable artifact.
 
-`pyramid-source-integrity` separately owns fact checking, source validation, calculations, data scope, and the pre-draft claim ledger. The structural layer uses the cleared claim set but does not reclassify or strengthen its claims.
+`pyramid-source-integrity` separately owns fact checking, source validation, calculations, data scope, source locators, confidence, and permitted use. The structural layer uses the cleared claim set but does not assign, reclassify, or strengthen confidence or claims.
 
 ## Three Rules of a Valid Pyramid
 

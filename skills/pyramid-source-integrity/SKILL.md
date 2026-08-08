@@ -25,9 +25,10 @@ For smaller drafting models and strict `use only these facts` work, run these as
 The internal claim packet contains:
 
 - the requested artifact and reader question;
+- a source register in which every source ID resolves to a complete, inspectable record;
 - the supplied decision or recommendation, identified as an instruction rather than evidence of an outcome;
-- allowed facts, each with a stable claim ID, canonical wording, source, scope, numbers, qualifiers, and must-preserve terms;
-- allowed derived values, each with a formula and rounding;
+- allowed facts, each with a stable claim ID, canonical wording, specific source and locator, confidence level and reason, permitted use, scope, numbers, qualifiers, and must-preserve terms;
+- allowed derived values, each with input claim IDs, formula, tool, validation result, specific source trace, confidence level and reason, and permitted use;
 - requested non-factual statements that may appear; and
 - contradicted, unverified, or missing claims that must not appear as facts.
 
@@ -43,10 +44,12 @@ Run this gate immediately before returning any source-bound artifact:
 
 1. Split the draft into individual factual and evaluative claims, including claims carried by adjectives and verbs.
 2. Map each claim to one supported ledger entry or one valid derived calculation.
-3. Delete any claim that has no match. Adding `may`, `could`, `likely`, or `we believe` does not make an unsupported prediction usable.
-4. Preserve the source's entities, population, period, geography, units, qualifiers, and causal strength. Do not broaden a sample, rename an entity, promote a contributing factor to a primary cause, or turn a resource count into a feasibility judgment.
-5. Treat every adjective that asserts importance, scale, effort, risk, quality, or certainty as a claim that requires source support.
-6. Treat every verb that asserts an intervention's effect, alignment, prevention, or result as a claim that requires source support.
+3. Reject any data point whose ledger entry lacks a source ID that resolves in the source register, exact locator, confidence level, confidence reason, or permitted-use action.
+4. Apply the permitted-use action. Do not state a Medium point without attribution or limitation, use a Low point as central support, or state an Unverified point as fact.
+5. Delete any claim that has no match. Adding `may`, `could`, `likely`, or `we believe` does not make an unsupported prediction usable.
+6. Preserve the source's entities, population, period, geography, units, qualifiers, and causal strength. Do not broaden a sample, rename an entity, promote a contributing factor to a primary cause, or turn a resource count into a feasibility judgment.
+7. Treat every adjective that asserts importance, scale, effort, risk, quality, or certainty as a claim that requires source support.
+8. Treat every verb that asserts an intervention's effect, alignment, prevention, or result as a claim that requires source support.
 
 When the user says `use only these facts`, the artifact may contain only the supplied decision, Supported facts, and Derived calculations. It must not add a benefit, risk, cause, prediction, urgency, implementation activity, next step, or closing invitation. A supplied recommendation authorizes the action statement; it does not authorize a claim about what the action will achieve.
 
@@ -75,6 +78,47 @@ The agent states or internally applies one mode before checking claims:
 
 When the user says `use only these facts`, use source-bound and data checks and apply the restricted output rule in the Non-Negotiable Output Gate. Do not perform or imply external verification unless requested or required by the task's risk.
 
+## Require a Source and Confidence for Every Data Point
+
+A data point is any factual claim or derived value, whether numeric or nonnumeric. No data point may enter the allowed claim set until it has all of these fields:
+
+1. **Claim ID:** A stable identifier used by the trace draft.
+2. **Canonical claim:** The exact meaning the artifact may preserve.
+3. **Source ID:** A stable identifier that resolves to one source record.
+4. **Specific locator:** Enough detail to find the exact evidence again.
+5. **Confidence:** `High`, `Medium`, `Low`, or `Unverified`.
+6. **Confidence reason:** A short explanation of source quality, directness of support, corroboration or conflict, and data validation.
+7. **Permitted use:** The exact action the drafting skill may take.
+8. **Integrity status:** `Supported`, `Derived`, `Contradicted`, `Unverified`, or `Not factual`.
+
+`User input`, `company data`, `research`, or a bare domain name is not a specific source. Record sources as follows:
+
+- **User-supplied material:** Assign a source ID and point to the current prompt's numbered fact, attached file and page, or exact quoted passage. User-supplied material that was not independently checked cannot exceed `Medium`.
+- **Web or published source:** Record title, author or publisher, URL, section/page/table, publication or effective date when available, and verification date.
+- **File, spreadsheet, or database:** Record path or dataset ID plus page, sheet and cell range, table and row, query, or another exact locator. Record version, date, or content hash when available.
+- **Derived value:** Assign a calculation source ID and record every input claim ID, formula or query, tool used, result, rounding, and validation outcome. The input claims remain the underlying evidence sources.
+
+For a derived value, `tool used` names the calculator, spreadsheet, query engine, or code execution that produced the result. Model or mental arithmetic is not a deterministic tool. If no tool ran, record `validation: not run` and do not assign `High` confidence.
+
+The packet's source register contains one complete record per source ID. A file record retains its full path or supplied filename, version/hash/date when available, and locator scheme. A published source retains its title, publisher/author, URL, relevant date, and checked date. A prompt record identifies the current prompt and numbered fact or exact quote. A calculation record uses its calculation ID and retains input claim IDs, formula/query, tool, result, rounding, and validation.
+
+Every data point's source ID must resolve to that register. Do not use `—`, `same as above`, `user input`, or `derived` in place of a source ID. A local row, cell, page, or section locator is valid only when its source record retains the complete file, publication, dataset, prompt, or calculation identity.
+
+Confidence describes the strength of the evidence for the exact data point. It is not a probability or a guarantee that the world is true. Never invent a numerical confidence score.
+
+- **High — state directly:** A specific primary or authoritative source directly supports the claim, or a structured dataset with understood provenance and schema produces it through a deterministic, validated calculation. Scope matches, and no material conflict remains.
+- **Medium — attribute or limit:** A specific source directly supports the claim, but it is user-supplied and not independently checked, single-source, partly ambiguous, or only partially validated. State the source or the limitation; do not call the claim independently verified.
+- **Low — limitation or lead only:** Support is indirect, stale, weak, definitionally ambiguous, or materially contested. Do not use the point as central factual support. Include it only as a limitation or a lead for verification when relevant.
+- **Unverified — exclude:** No inspectable source or exact locator supports the claim. Exclude it from the artifact as fact and state what source would resolve it when the gap matters.
+
+The permitted-use field must repeat the action for that data point: `state directly`, `state with attribution or limitation`, `limitation or lead only`, or `exclude`. A confidence label without its reason and permitted action fails the gate.
+
+A derived value cannot receive higher confidence than its lowest-confidence required input. Reduce it further when the formula, schema, denominator, join, extraction, or validation is uncertain.
+
+Set permitted use mechanically from the final confidence after applying that cap. A validated calculation with `Medium` inputs remains `Medium` and must say `state with attribution or limitation`; arithmetic validation does not authorize `state directly`.
+
+Set a calculated point's integrity status to `Derived`, not `Supported`. `Supported` is reserved for a claim directly stated by its source.
+
 ## Build the Claim Ledger
 
 Create an internal ledger with one row per material claim. Preserve the source wording until the check is complete.
@@ -83,16 +127,19 @@ For each claim, record:
 
 1. the exact claim;
 2. whether it is a supplied fact, derived calculation, inference, recommendation, or opinion;
-3. the supporting source or `none supplied`;
-4. its population, period, geography, product, or other scope;
-5. every number's value, unit, denominator, and comparison base;
-6. the exact terms that must remain explicit to preserve scope and meaning; and
-7. one status and its required action:
-   - **Supported:** The source directly supports the claim. The drafting skill may use it with the same meaning and scope.
-   - **Derived:** The stated calculation follows from supported inputs. The drafting skill may use it when the calculation or method remains clear.
+3. its source ID and specific locator or `none supplied`;
+4. its confidence level, confidence reason, and permitted use;
+5. its population, period, geography, product, or other scope;
+6. every number's value, unit, denominator, and comparison base;
+7. the exact terms that must remain explicit to preserve scope and meaning; and
+8. one status and its required action:
+   - **Supported:** The source directly supports the claim. The drafting skill may use it with the same meaning and scope only as its confidence-based permitted-use action allows.
+   - **Derived:** The stated calculation follows from supported inputs. The drafting skill may use it only as its confidence-based permitted-use action allows and when the calculation or method remains clear.
    - **Contradicted:** A supplied or verified source or a valid calculation conflicts with the claim. The drafting skill must not present it as fact.
    - **Unverified:** No checked source establishes the claim. The drafting skill must omit it, request verification, or label it as unverified when the user needs the limitation.
    - **Not factual:** The statement is an inference, recommendation, or opinion. The drafting skill may use it only when the user supplied or explicitly requested that statement and must not present it as a sourced fact.
+
+Status and confidence answer different questions. Status records whether the named source supports the claim; confidence and permitted use determine how the artifact may use that supported claim.
 
 Use the ledger to create the internal claim packet. Do not print either one unless the user asks for a fact-check report or unresolved claims prevent reliable drafting.
 
@@ -131,12 +178,12 @@ A search result, uncited recollection, or source that merely discusses the topic
 
 Before structuring, pass the drafting skill only:
 
-- supported facts with their original scope;
-- derived calculations with their formulas and rounding;
+- supported facts with their source IDs, exact locators, confidence reasons, permitted use, and original scope;
+- derived calculations with their input claim IDs, formulas, tool and validation records, confidence reasons, and permitted use;
 - requested inferences or recommendations identified as such and linked to their supporting evidence; and
 - unresolved conflicts or evidence limits that the reader needs to know.
 
-The structure layer may select, group, order, and express these claims. It must not change their status, scope, numbers, or certainty.
+The structure layer may select, group, order, and express these claims. It must not assign confidence, upgrade confidence, replace a source, weaken a locator, or change status, scope, numbers, or certainty.
 
 After drafting, run the separate post-check against every factual or evaluative clause, headline, table entry, and number. For a trace draft, validate each entire tagged clause against its canonical claim and must-preserve terms, restore any missing scope, then strip the IDs. Delete or correct unsupported additions before returning the artifact. If structure requires a claim the packet does not support, remove that branch or state the evidence limit; do not manufacture the claim.
 
@@ -145,10 +192,10 @@ After drafting, run the separate post-check against every factual or evaluative 
 Use these headings:
 
 1. **RESULT** — State whether the checked material is supported, needs correction, or cannot be verified.
-2. **CLAIMS** — For each material claim, give its status, source, and required action.
+2. **CLAIMS** — For each material claim, give its status, specific source and locator, confidence, confidence reason, and permitted use or required correction.
 3. **DATA CHECKS** — Show only calculations, scope mismatches, incompatible comparisons, or data-definition issues that affect use.
 4. **UNVERIFIED OR MISSING** — List claims or inputs that remain unresolved and what evidence would resolve them.
-5. **SOURCES** — List the supplied or external sources actually checked. If none were checked externally, state that directly.
+5. **SOURCES** — List every source ID with its exact locator and the supplied or external source actually checked. If none were checked externally, state that directly.
 
 Do not mix structural Pyramid Principle findings into this report. If the user requests both checks, return separate `SOURCE INTEGRITY` and `STRUCTURE` sections.
 

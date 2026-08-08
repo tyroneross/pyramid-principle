@@ -39,7 +39,7 @@ Before drafting, the agent identifies:
 
 1. **Reader question:** What must the artifact answer for its reader?
 2. **Requested outcome:** Does the user want facts, a recommendation, a decision, an ask, or a status update?
-3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the artifact to use?
+3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the artifact to use, and what source, confidence, and permitted-use record accompanies each data point?
 4. **Medium:** Email, memo, one-pager, Slack, or another short form?
 5. **Constraints:** Audience, length, tone, deadline, and sensitivity.
 
@@ -61,7 +61,7 @@ The agent performs these steps in order:
 
 ## Use the Source-Integrity Handoff
 
-Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. This skill may select, group, order, and express them; it must not change their numbers, scope, status, or certainty.
+Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. Follow each data point's permitted-use action. This skill may select, group, order, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
 
 For a separate-call workflow, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output.
 
