@@ -1,6 +1,6 @@
 {
   "name": "pyramid-principle",
-  "description": "Barbara Minto's Pyramid Principle for short-form, long-form, presentations, and audits",
+  "description": "Barbara Minto's Pyramid Principle with separate source-integrity checks for professional writing",
   "author": {
     "name": "Tyrone Ross"
   },
@@ -12,6 +12,8 @@
     "minto",
     "communication",
     "executive",
-    "audit"
+    "audit",
+    "fact-checking",
+    "data-validation"
   ]
 }

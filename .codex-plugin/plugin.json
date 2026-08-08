@@ -1,6 +1,6 @@
 {
   "name": "pyramid-principle",
-  "description": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
+  "description": "Barbara Minto's Pyramid Principle with separate source-integrity checks for professional writing.",
   "author": {
     "name": "Tyrone Ross"
   },
@@ -12,13 +12,15 @@
     "minto",
     "communication",
     "executive",
-    "audit"
+    "audit",
+    "fact-checking",
+    "data-validation"
   ],
   "skills": "./skills",
   "interface": {
     "displayName": "Pyramid Principle",
-    "shortDescription": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
-    "longDescription": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit.",
+    "shortDescription": "Pyramid-structured writing with separate source-integrity checks.",
+    "longDescription": "Composable skills that separate fact checking and data handling from Pyramid Principle structure, storyline, drafting, and audit.",
     "developerName": "Ross Labs",
     "category": "Productivity",
     "capabilities": [

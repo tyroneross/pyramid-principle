@@ -8,7 +8,7 @@ version: 0.1.0
 
 ## Purpose
 
-Diagnose user-supplied writing against Barbara Minto's Pyramid Principle. Load `pyramid-principle-core` first. Its operating contract and structural rules take precedence.
+Diagnose user-supplied writing against Barbara Minto's Pyramid Principle. Load `pyramid-principle-core` for the structural rules. Load `pyramid-source-integrity` separately only when the user also requests fact or data validation.
 
 This skill audits. It does not rewrite the content, draft a replacement, or explain the entire framework.
 
@@ -22,6 +22,7 @@ Hand off when:
 - the user wants a report or multi-section document drafted → `pyramid-long-form`
 - the user wants a deck drafted → `pyramid-presentation`
 - the user wants the framework explained → `pyramid-principle-core`
+- the user wants claims, sources, calculations, or data checked rather than structure → `pyramid-source-integrity`
 
 Do not audit without user-supplied content.
 
@@ -92,7 +93,9 @@ List position alone does not establish comparative order. When no order is disce
 
 Every finding must quote or describe evidence in the supplied content and cite a valid source anchor. A comment with no source anchor is an editorial observation, not a Pyramid Principle violation, and receives no severity label.
 
-Audit the supplied content's structure, not the truth of an uncontradicted supplied fact. A scoped factual statement such as `all requests received this quarter` defines the scope of that statement; it is not a MECE violation or a request to prove the data independently.
+Audit the supplied content's structure, not the truth of its factual claims. A scoped factual statement such as `all requests received this quarter` is not a MECE violation or a request to prove the data independently.
+
+When the user requests both checks, run `pyramid-source-integrity` and this structural audit independently. Return separate `SOURCE INTEGRITY` and `STRUCTURE` sections. A contradicted or unverified fact is a source-integrity finding, not a Pyramid Principle violation unless the text also contains a demonstrated structural break.
 
 The agent must not:
 
@@ -154,6 +157,7 @@ The agent checks the report internally and fixes any failure:
 
 - `references/diagnostic-checklist.md` — detailed rule-indexed checks
 - `references/common-violations.md` — violation catalog; examples are patterns only
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-source-integrity/SKILL.md` — separate fact and data validation
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md`

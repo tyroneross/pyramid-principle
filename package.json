@@ -1,7 +1,7 @@
 {
   "name": "@tyroneross/pyramid-principle",
   "version": "0.1.2",
-  "description": "Barbara Minto's Pyramid Principle as composable skills for professional writing — short-form, long-form, presentations, and audit. Claude Code + Codex plugin.",
+  "description": "Barbara Minto's Pyramid Principle with separate source-integrity checks for professional writing. Claude Code + Codex plugin.",
   "license": "Apache-2.0",
   "author": {
     "name": "Tyrone Ross, Jr",
@@ -22,6 +22,8 @@
     "communication",
     "executive",
     "audit",
+    "fact-checking",
+    "data-validation",
     "claude-code",
     "codex",
     "plugin"

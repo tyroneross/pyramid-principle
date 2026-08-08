@@ -1,15 +1,16 @@
 # pyramid-principle
 
-Turn source material into decision-ready professional writing: state the answer before support, group claims logically, and distinguish evidence from interpretation.
+Turn source material into decision-ready professional writing: validate the claims, state the answer before support, and group the support logically.
 
 ## What it does
 
-This plugin packages Barbara Minto's Pyramid Principle as five discrete, composable skills for agents and writing workflows. Generative skills draft and structure requested artifacts; the audit skill diagnoses existing writing. The shared core keeps the structural rules, evidence safeguards, example isolation, and output contract consistent across every format.
+This plugin packages Barbara Minto's Pyramid Principle and a separate source-integrity layer as six discrete, composable skills. Source integrity checks claims and data. The core and generative skills build the structure and storyline. The audit skill diagnoses structural logic.
 
-## The 5 Skills
+## The 6 Skills
 
 | Skill | Role | Example triggers |
 |---|---|---|
+| `pyramid-source-integrity` | Fact checking, source validation, calculations, data scope, and claim handoff | "fact-check this", "use only these facts", "validate the data" |
 | `pyramid-principle-core` | Canonical rule library: SCQA, MECE, deduction vs induction, vertical/horizontal logic | "minto", "pyramid principle", "SCQA", "MECE" |
 | `pyramid-short-form` | Emails, memos, exec summaries, one-pagers, BLUF notes | "write an email", "exec summary", "draft a memo" |
 | `pyramid-long-form` | Reports, briefs, research writeups, multi-section documents | "structure this report", "outline a brief", "write a whitepaper" |
@@ -18,11 +19,23 @@ This plugin packages Barbara Minto's Pyramid Principle as five discrete, composa
 
 ## Composition
 
-Canonical rules and definitions live in `pyramid-principle-core/references/` — a single source of truth for all structural principles. Sibling skills cross-reference this material using the path `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/...` so rule definitions are never duplicated. External agents address skills by their skill ID (e.g., `pyramid-audit`) without needing to know internal file layout. This makes it safe to update rule definitions in one place and have all skills reflect the change.
+The plugin separates claim integrity from communication structure:
+
+1. A separate `pyramid-source-integrity` pre-check validates supplied claims, calculations, scope, and external facts when tools are available. It produces an internal claim packet.
+2. `pyramid-principle-core` and a format skill select, group, order, and express only the packet's claims.
+3. A separate `pyramid-source-integrity` post-check compares the finished artifact with the original packet and removes or corrects unsupported content.
+
+For smaller drafting models and strict source-bound work, the host should run these as three model calls and use its strongest available verification model for the pre-check and post-check. Deterministic tools should verify material calculations. A capable host may keep the operations as distinct internal stages, but the structure skill never approves its own factual output.
+
+Canonical Pyramid Principle rules live in `pyramid-principle-core/references/`. Fact and data rules live in `pyramid-source-integrity/SKILL.md`. Each responsibility has one owner, and every skill remains independently addressable by its skill ID.
+
+## Capability boundary
+
+The plugin can check consistency with supplied material, direct deterministic calculation and research tools, and preserve data scope. It cannot certify that a supplied source is true, access current information without a tool, recover missing data definitions, prove causation from correlation, or make a small model reliable through instructions alone.
 
 ## Source grounding
 
-`docs/source-anchors.md` holds verified verbatim quotes from Barbara Minto's *The Pyramid Principle* (2009 revised edition) with exact page citations. Each anchor has a stable ID (e.g., `minto-p22-scqa`) that skills cite directly, making source grounding visible and auditable without embedding raw quotes in every skill file.
+`docs/source-anchors.md` grounds the framework itself with verified quotations from Barbara Minto's *The Pyramid Principle* (2009 revised edition). These anchors support the structural rules; they do not verify facts in a user's artifact.
 
 ## Status
 

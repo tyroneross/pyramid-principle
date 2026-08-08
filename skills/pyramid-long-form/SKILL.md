@@ -8,7 +8,7 @@ version: 0.1.0
 
 ## Purpose
 
-Structure or draft a multi-section professional document. Load `pyramid-principle-core` first. Its operating contract and structural rules take precedence.
+Structure or draft a multi-section professional document. When the task includes sources, facts, or data, receive the internal claim packet produced by a separate `pyramid-source-integrity` pre-check. Then load `pyramid-principle-core` for structure.
 
 This skill handles documents that require developed sections or usually exceed about 500 words. It does not audit existing writing or produce slide storylines.
 
@@ -29,7 +29,7 @@ Before structuring the document, the agent identifies:
 
 1. **Reader question:** What must the document answer?
 2. **Governing thought:** Which decision, recommendation, or finding did the user supply?
-3. **Evidence:** Which supplied facts and cited sources may support the governing thought?
+3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the document to use?
 4. **Requested depth:** Outline, detailed outline, section draft, or full document?
 5. **Constraints:** Audience, length, tone, required sections, sensitivity, and citation format.
 
@@ -46,16 +46,16 @@ Do not output SCQA, key-line, reasoning-mode, assumption, or self-check labels u
 
 When the user requests a source-bound outline or says to use only supplied facts:
 
-- include only the supplied decision, source-backed section claims, supplied facts, and explicit evidence limits;
-- omit generic introduction, implementation, expected-outcome, and conclusion sections unless the user requests them and the source supplies their content;
+- build only from the claim set and evidence limits cleared by `pyramid-source-integrity`;
+- omit generic introduction, implementation, expected-outcome, and conclusion sections unless the user requests them and the cleared claim set supplies their content;
 - do not add a section merely because it is common in that document type;
-- state an unevidenced expected result as `not established by the supplied evidence`, not as a prediction.
+- place a requested but unverified expected result under `Evidence limits`, not in the storyline as a prediction.
 
 The source-bound outline starts with the actual title and decision sentence, then uses only asserted section headings with their supplied facts. It may end with one `Evidence limits` section. It must not print the drafting labels `Title`, `Governing Thought`, `Fact`, `Inference`, `Decision`, `Rationale`, or `End of Outline`.
 
-Unless the user supplies their content, the agent must not create sections named or serving as `Introduction`, `Implementation`, `Expected Outcomes`, `Benefits`, `Next Steps`, or `Conclusion`.
+Unless the cleared claim set supplies their content, the agent must not create sections named or serving as `Introduction`, `Implementation`, `Expected Outcomes`, `Benefits`, `Next Steps`, or `Conclusion`.
 
-If the supplied decision includes an intervention whose effect has not been measured, state the intervention in the decision sentence only. Do not create a section that predicts its benefits. Put the missing outcome evidence under `Evidence limits`.
+If the cleared decision includes an intervention whose effect remains unverified, state the intervention in the decision sentence only. Put the missing outcome evidence under `Evidence limits` rather than creating a benefits section.
 
 Use this final syntax for a source-bound outline:
 
@@ -69,7 +69,7 @@ Use this final syntax for a source-bound outline:
 
 The agent completes the architecture before drafting prose:
 
-1. **Write the governing thought.** Use the decision, recommendation, or finding the user supplied. Do not replace it with a stronger outcome claim.
+1. **Write the governing thought.** Use the decision, recommendation, or finding cleared for use. Do not replace it with a stronger outcome claim.
 2. **Add only necessary introduction context.** Include the minimum Situation or Complication the reader needs, then state the governing thought before the document body. When the context is shared, begin with the governing thought. (`minto-p22-scqa`)
 3. **Select section claims.** Use the distinct claims required to support the governing thought. Do not add or remove sections to reach a preferred count.
 4. **Test each peer set.** Every section or subsection at one level answers the same parent question and performs the same logical role. Different topics may remain peers when one accurate role label describes all of them. (`minto-p96-mece`)
@@ -88,20 +88,13 @@ When the user requests prose, the agent:
 5. revises the architecture when new evidence changes the governing thought instead of writing around an outdated outline;
 6. concludes by restating the governing thought only when the document needs a conclusion, without recapping every section.
 
-## Control Unsupported Content
+## Use the Source-Integrity Handoff
 
-Every factual statement, heading, and support point must map to supplied evidence or a cited source.
+Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. This skill may select, group, order, nest, and express them; it must not change their numbers, scope, status, or certainty.
 
-The agent must not:
+For a separate-call workflow, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output. If a section requires unsupported content, change the architecture or state the evidence limit.
 
-- turn a recommendation into a promised outcome
-- convert correlation into cause
-- infer savings, delays, risk, compliance, reliability, success, or improvement without supporting evidence
-- attribute an aggregate metric to one subgroup or activity unless the source makes that allocation
-- add implementation details, staffing needs, timelines, or expected results to complete a template
-- copy names, facts, terminology, scenarios, or conclusions from examples
-
-When the user requests an interpretation or recommendation, distinguish it from supplied fact and identify the evidence that supports it. Qualify the claim when the evidence suggests but does not establish the conclusion.
+Treat examples as structural patterns. Do not copy their names, facts, terminology, scenarios, or conclusions into the artifact.
 
 ## Format the Outline
 
@@ -119,20 +112,20 @@ For a source-bound outline, stop after the final source-backed section. Do not a
 
 The agent checks the architecture and requested artifact internally and fixes any failure:
 
-1. The supplied governing thought answers the reader question before body support.
+1. The cleared governing thought answers the reader question before body support.
 2. Every heading is a claim supported by material beneath it.
-3. Every factual statement maps to supplied evidence or a cited source.
-4. No claim is stronger or more specific than its evidence.
+3. The post-draft source-integrity check approves every factual statement, heading, table entry, and number.
+4. No structural rewrite changes a claim's scope, status, or certainty.
 5. Every peer set answers one parent question, performs one role, and uses one logical order.
 6. The outline retains every material support without forcing a preferred count or depth.
-7. No aggregate metric is attributed to a component without evidence.
-8. No example terminology, unsupported content, framework labels, or self-check appears.
-9. The response matches the requested depth and contains only the requested artifact.
+7. No example terminology, framework labels, or self-check appears.
+8. The response matches the requested depth and contains only the requested artifact.
 
 ## References
 
 - `references/report-skeleton.md` — detailed document patterns; use structure only
 - `references/key-line-examples.md` — grouping examples; never use their facts as task evidence
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-source-integrity/SKILL.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md`

@@ -14,25 +14,25 @@ Source material: Barbara Minto, *The Pyramid Principle* (2009 revised edition). 
 
 ## Route the Request
 
-Load this skill first for any Pyramid Principle task, then hand off when:
+Load this skill for any Pyramid Principle structure or storyline task. When the task also uses sources, facts, or data, `pyramid-source-integrity` clears those claims first. Hand off when:
 
+- the user wants fact checking, source validation, or data handling → `pyramid-source-integrity`
 - the user wants an email, memo, executive summary, one-pager, BLUF, Slack update, or status note → `pyramid-short-form`
 - the user wants a report, brief, proposal, or multi-section document → `pyramid-long-form`
 - the user wants a deck or presentation storyline → `pyramid-presentation`
 - the user wants existing writing diagnosed → `pyramid-audit`
 
-## Operating Contract for Generated Output
+## Structural Contract for Generated Output
 
 Every sibling skill applies these rules before its medium-specific guidance:
 
 1. **The agent states the main answer before its supporting points.** If the reader cannot understand the answer without context, the agent gives only the context required to understand it, then states the answer before evidence or detail.
-2. **The agent grounds every factual claim in supplied evidence or a cited source.** When the agent adds a requested inference or recommendation, it distinguishes that statement from supplied fact and identifies the evidence supporting it. The agent does not invent missing facts, causes, metrics, or certainty.
-3. **The agent uses examples as structural patterns, not source material.** It does not copy an example's names, facts, scenario, terminology, or conclusion unless the user supplied them for the current task.
-4. **The agent groups peers only when they answer the same parent question and perform the same logical role.** It groups reasons with reasons, evidence with evidence, steps with steps, findings with findings, and risks with risks. Different topics may remain peers when one accurate role label describes every point.
-5. **The agent returns the requested artifact by default.** It does not include outlines, framework labels, drafting notes, assumptions, or self-check commentary unless the user requests them or unresolved ambiguity prevents a reliable artifact.
-6. **The agent treats counts and positions as format defaults, not correctness tests.** It adjusts them to the reader, medium, evidence, and complexity while preserving answer-first structure and valid grouping.
+2. **The agent groups peers only when they answer the same parent question and perform the same logical role.** It groups reasons with reasons, evidence with evidence, steps with steps, findings with findings, and risks with risks. Different topics may remain peers when one accurate role label describes every point.
+3. **The agent treats counts and positions as format defaults, not correctness tests.** It adjusts them to the reader, medium, evidence, and complexity while preserving answer-first structure and valid grouping.
+4. **The agent uses examples as structural patterns, not task content.** It does not copy an example's names, facts, scenario, terminology, or conclusion unless the user supplied them for the current task.
+5. **The agent returns the requested artifact by default.** It does not include framework labels, drafting notes, assumptions, or self-check commentary unless the user requests them or unresolved ambiguity prevents a reliable artifact.
 
-Evidence discipline, example isolation, and artifact-only output are modern safeguards added for LLM use. The structural rules below are grounded in Minto's framework and identified by source anchor.
+`pyramid-source-integrity` separately owns fact checking, source validation, calculations, data scope, and the pre-draft claim ledger. The structural layer uses the cleared claim set but does not reclassify or strengthen its claims.
 
 ## Three Rules of a Valid Pyramid
 
@@ -96,7 +96,7 @@ The agent checks mutual exclusivity and collective exhaustiveness separately:
 - **Mutually exclusive:** No two peers describe the same underlying phenomenon within the parent scope.
 - **Collectively exhaustive:** The set covers the relevant universe defined by the parent scope.
 
-The agent verifies exhaustiveness only when supplied content or cited domain evidence establishes the relevant universe. A parent that asserts a number or uses `all` claims completeness; it does not prove completeness. When the universe is undefined, the agent states that exhaustiveness is not verifiable rather than inventing a missing item or declaring the set complete. (`minto-p96-mece`)
+A set is exhaustive only when its parent defines the relevant universe. If the cleared claim set does not define that universe, the agent does not call the set exhaustive. (`minto-p96-mece`)
 
 Before accepting a peer set, the agent:
 
@@ -125,6 +125,7 @@ Minto's group-size observation makes a growing flat list a cue to test categoriz
 - `references/vertical-horizontal-logic.md` — detailed logic examples
 - `references/mece-grouping.md` — grouping diagnostics and examples
 - `references/llm-adaptation.md` — modern LLM failure modes and prompt patterns
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-source-integrity/SKILL.md` — separate fact-checking and data-handling contract
 - `${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md`
 
 Reference examples are never task evidence. Load them only when detailed explanation or diagnosis requires them, and do not copy their content into a user artifact.
