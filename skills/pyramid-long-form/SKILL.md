@@ -1,6 +1,6 @@
 ---
 name: pyramid-long-form
-description: Use when user asks to outline, structure, or restructure a long report, brief, proposal, whitepaper, strategy doc, or research writeup using the pyramid principle. Full nested key-line outline.
+description: Use when user asks to structure or draft a report, brief, proposal, research writeup, strategy document, whitepaper, or other multi-section professional writing using the Pyramid Principle.
 version: 0.1.0
 ---
 
@@ -8,152 +8,133 @@ version: 0.1.0
 
 ## Purpose
 
-Generate full-document structural scaffolding for long-form professional writing using Barbara Minto's Pyramid Principle. The primary output of this skill is the pyramid outline — a hierarchy of asserted key-line points, section headings, and nested sub-key-lines — before any extended prose is written. Prose drafting follows the scaffold; never the reverse.
+Structure or draft a multi-section professional document. Load `pyramid-principle-core` first. Its operating contract and structural rules take precedence.
 
-Target artifact length: 500–20,000+ words. Document types: reports, briefs, proposals, research writeups, decision memos, strategy documents, whitepapers, and any other multi-section professional writing with section headings. The emphasis throughout is structure-first: a structurally sound skeleton produces coherent prose; prose written without a skeleton rarely restructures into one.
+This skill handles documents that require developed sections or usually exceed about 500 words. It does not audit existing writing or produce slide storylines.
 
-Source grounding for the foundational claim: `minto-p5-pyramid-sorting`.
+## Route the Request
 
-## When to Invoke / When NOT to Invoke
+Use this skill for reports, briefs, proposals, research writeups, decision documents, strategy documents, and whitepapers.
 
-**Invoke when the artifact is:**
-- A formal report (analytical, findings-based, or periodic)
-- A strategic proposal or business case
-- A research synthesis or literature-grounded writeup
-- A decision memo requiring multiple headed sections
-- A strategy document or whitepaper
-- Any document where the reader needs multiple headed sections and the argument runs longer than 500 words
+Hand off when:
 
-**Do not invoke — hand off instead:**
-- Output is ≤500 words or fits on one page → `pyramid-short-form`
-- Output is a slide deck or presentation → `pyramid-presentation`
-- User supplied existing writing and wants structural critique → `pyramid-audit`
-- User wants the foundational rules explained before drafting → `pyramid-principle-core`
+- the artifact is an email, Slack update, executive summary, or one-pager → `pyramid-short-form`
+- the artifact is a deck or presentation storyline → `pyramid-presentation`
+- the user wants existing writing diagnosed → `pyramid-audit`
+- the user wants the framework explained → `pyramid-principle-core`
 
-**The heuristic:** If the artifact requires more than one headed section, or if the argument requires multiple independent logical threads developed in sequence, it belongs in long-form.
+## Identify the Inputs
 
-## The Two-Pass Workflow
+Before structuring the document, the agent identifies:
 
-Long-form writing proceeds in two distinct passes. Do not merge them. (`minto-p5-pyramid-sorting`, `minto-p17-vertical-qa`)
+1. **Reader question:** What must the document answer?
+2. **Governing thought:** Which decision, recommendation, or finding did the user supply?
+3. **Evidence:** Which supplied facts and cited sources may support the governing thought?
+4. **Requested depth:** Outline, detailed outline, section draft, or full document?
+5. **Constraints:** Audience, length, tone, required sections, sensitivity, and citation format.
 
-**Pass 1 — Architecture:** Identify the reader's question, write the governing thought, build the key line, nest supports to the required depth. No prose beyond single asserted sentences. Output is a complete outline: a hierarchy of claims from governing thought to leaves, every node an asserted point.
+The agent asks a question only when a missing answer would materially change the document and the supplied evidence does not support a safe choice.
 
-**Pass 2 — Prose population:** Write section openers stating the point first. Add evidence and context below it. Anchor every paragraph to a Pass 1 outline node. Transitions name the prior peer's point and introduce the next by its role in the key line. If new information found during writing invalidates the governing thought, return to Pass 1 and revise the outline — do not revise prose around an outdated structure.
+## Return the Requested Depth
 
-## Intake — Clarify Before Pass 1
+- **Outline:** Return the title, actual decision or governing claim, section claims, and nested source-backed supports. The eventual document word budget does not set the outline's length. Do not draft body prose or output framework commentary.
+- **Detailed outline:** Add subsection claims, evidence placement, and source notes.
+- **Section draft:** Draft only the requested section and preserve its position in the document logic.
+- **Full document:** Draft the complete document after the outline passes the internal checks.
 
-Confirm these inputs before building the pyramid.
+Do not output SCQA, key-line, reasoning-mode, assumption, or self-check labels unless the user requests an annotated structure.
 
-- **Reader's question** — one sentence. "What should we do about the platform migration?" is a question. "The migration situation" is not.
-- **Document type** — report, brief, proposal, research synthesis, strategy doc, whitepaper, or decision memo. Determines which skeleton variant applies (see `references/report-skeleton.md`).
-- **Length budget** — word count or page target. Determines pyramid depth and key-line width.
-- **Audience seniority** — determines how much shared context the SCQA can assume.
-- **Decision, information, or persuasion** — what the document must do for its reader. Determines the key-line logic mode.
-- **Evidence on hand** — what data and analysis exist. Determines what the pyramid can claim at the leaf level.
-- **Approval chain** — who reviews before the final reader. Affects governing thought specificity and evidence thresholds.
+When the user requests a source-bound outline or says to use only supplied facts:
 
-Tag any inference before proceeding: "TAG:ASSUMED — reader's question is X."
+- include only the supplied decision, source-backed section claims, supplied facts, and explicit evidence limits;
+- omit generic introduction, implementation, expected-outcome, and conclusion sections unless the user requests them and the source supplies their content;
+- do not add a section merely because it is common in that document type;
+- state an unevidenced expected result as `not established by the supplied evidence`, not as a prediction.
 
-## Pass 1 — Building the Pyramid
+The source-bound outline starts with the actual title and decision sentence, then uses only asserted section headings with their supplied facts. It may end with one `Evidence limits` section. It must not print the drafting labels `Title`, `Governing Thought`, `Fact`, `Inference`, `Decision`, `Rationale`, or `End of Outline`.
 
-Execute these steps in order.
+Unless the user supplies their content, the agent must not create sections named or serving as `Introduction`, `Implementation`, `Expected Outcomes`, `Benefits`, `Next Steps`, or `Conclusion`.
 
-**Step 1: Write the reader's question in one sentence.** Drafting anchor — may not appear in the final document but constrains every structural decision.
+If the supplied decision includes an intervention whose effect has not been measured, state the intervention in the decision sentence only. Do not create a section that predicts its benefits. Put the missing outcome evidence under `Evidence limits`.
 
-**Step 2: Write the governing thought in one declarative sentence.** The direct answer to the reader's question. Specific enough to be disputed. The apex: everything in the document either introduces it (SCQA) or supports it (pyramid). (`minto-p22-scqa`)
+Use this final syntax for a source-bound outline:
 
-**Step 3: Draft the SCQA introduction.** Four moves: Situation (shared context the reader already accepts), Complication (what changed or what problem exists), Question (explicit or implicit), Answer (the governing thought, stated as the final sentence of the introduction). For long-form, each move earns its own sentence or short paragraph; the introduction runs no longer than one page.
+- first line: a Markdown `#` title with no `Title` label;
+- second paragraph: the supplied decision sentence with no `Governing Thought`, `Governing Claim`, or `Decision` label;
+- remaining `##` sections: source-backed claims and their supplied facts;
+- optional final `## Evidence limits` section;
+- stop after the final section without an `End of Outline` label.
 
-Full SCQA treatment — pitfalls, medium-specific guidance, worked examples — is in `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md`. (`minto-p22-scqa`)
+## Build the Architecture
 
-**Step 4: Draft the 3–5 key-line points.** Each point answers the question the governing thought raises ("Why?" / "How?" / "Why do you say that?"). Apply the plural-noun test before writing: name the set with a specific plural noun. Run MECE checks: no two points describe the same phenomenon; the set accounts for all significant support the governing thought requires.
+The agent completes the architecture before drafting prose:
 
-MECE validation checklist: `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/mece-grouping.md`. (`minto-p96-mece`)
+1. **Write the governing thought.** Use the decision, recommendation, or finding the user supplied. Do not replace it with a stronger outcome claim.
+2. **Add only necessary introduction context.** Include the minimum Situation or Complication the reader needs, then state the governing thought before the document body. When the context is shared, begin with the governing thought. (`minto-p22-scqa`)
+3. **Select section claims.** Use the distinct claims required to support the governing thought. Do not add or remove sections to reach a preferred count.
+4. **Test each peer set.** Every section or subsection at one level answers the same parent question and performs the same logical role. Different topics may remain peers when one accurate role label describes all of them. (`minto-p96-mece`)
+5. **Choose one order per peer set.** Use deductive, chronological, structural, or comparative order only when the material shows that order. (`minto-p5-pyramid-sorting`, `minto-p63-deduction-induction`)
+6. **Place evidence under the claim it supports.** Do not create a separate background or data section when the material belongs under a specific claim.
+7. **Nest only when needed.** Add a lower level when a section claim requires multiple distinct supports. Do not create depth to make the outline look complete.
 
-**Step 5: Choose one logical order for the key line and hold it.** Deductive, chronological, structural, or comparative — determined by what the set represents, not preference. State which order applies and why. For deductive key lines, the governing thought is the "therefore" conclusion. For inductive key lines, the governing thought is the inference from the pattern.
+## Draft the Prose
 
-Deductive vs. inductive guidance: `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md`. (`minto-p63-deduction-induction`)
+When the user requests prose, the agent:
 
-**Step 6: Draft each key-line point's sub-key-line (3–5 points).** State the key-line point, ask what question it raises, write the sub-points that answer that exact question. Each sub-point is a complete asserted sentence. Apply plural-noun test and MECE checks at each sub-key-line independently.
+1. opens each section with the claim that section establishes;
+2. places source-backed evidence and explanation beneath that claim;
+3. keeps each paragraph tied to one outline node;
+4. uses transitions only when they clarify the logical relationship between peer sections;
+5. revises the architecture when new evidence changes the governing thought instead of writing around an outdated outline;
+6. concludes by restating the governing thought only when the document needs a conclusion, without recapping every section.
 
-Q/A dialogue mechanism: `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md`. (`minto-p17-vertical-qa`)
+## Control Unsupported Content
 
-**Step 7: Repeat for additional levels as needed.** Most reports need two levels below the governing thought. Whitepapers may need three. Four levels is the practical maximum. Stop when each leaf satisfies: a skeptical reader who accepts it would have no further logical question the document is obligated to answer. A leaf with no such question left open is complete; a leaf that can be removed without leaving a gap is bloat.
+Every factual statement, heading, and support point must map to supplied evidence or a cited source.
 
-## Pass 2 — Populating with Prose
+The agent must not:
 
-**Open each section with the point it proves.** First sentence states the claim; evidence and context follow. Never open with background.
+- turn a recommendation into a promised outcome
+- convert correlation into cause
+- infer savings, delays, risk, compliance, reliability, success, or improvement without supporting evidence
+- attribute an aggregate metric to one subgroup or activity unless the source makes that allocation
+- add implementation details, staffing needs, timelines, or expected results to complete a template
+- copy names, facts, terminology, scenarios, or conclusions from examples
 
-**Headings assert, not describe.** "Three factors slow adoption" asserts a finding. "Adoption factors" describes a topic. Every heading is assertive, specific, and falsifiable. (`minto-p5-pyramid-sorting`; heading grammar patterns in `references/report-skeleton.md`; ordering rationale in `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md`)
+When the user requests an interpretation or recommendation, distinguish it from supplied fact and identify the evidence that supports it. Qualify the claim when the evidence suggests but does not establish the conclusion.
 
-**Transitions name the prior point and introduce the next.** A single sentence between peer sections recalls the prior point and positions the next by its role in the key line.
+## Format the Outline
 
-**Evidence sits under the point it supports.** Never in a separate "data" or "background" section. Evidence placed before the claim it supports inverts the pyramid.
+For an unannotated outline:
 
-**Conclude with a restatement of the governing thought.** Not a section-by-section recap. One sentence or short paragraph restating the apex claim in light of the evidence presented.
+- state the actual governing claim near the top without labeling it `Governing Thought`;
+- use asserted section headings, not topic labels;
+- place only the facts or qualified interpretations that support each heading beneath it;
+- state a source limitation when an aggregate fact cannot support a narrower attribution;
+- include an ask, next step, or expected result only when supplied or requested.
 
-## Section-Intro Formula
+For a source-bound outline, stop after the final source-backed section. Do not add prose to approach the eventual document word budget.
 
-Every section with sub-sections opens with an intro paragraph (30–60 words):
+## Verify Before Returning
 
-1. Restate the parent question in one line.
-2. State the answer this section gives — asserted in one declarative sentence.
-3. Preview the peer points if sub-sections follow — name them in one compressed sentence.
+The agent checks the architecture and requested artifact internally and fixes any failure:
 
-## Heading Conventions
+1. The supplied governing thought answers the reader question before body support.
+2. Every heading is a claim supported by material beneath it.
+3. Every factual statement maps to supplied evidence or a cited source.
+4. No claim is stronger or more specific than its evidence.
+5. Every peer set answers one parent question, performs one role, and uses one logical order.
+6. The outline retains every material support without forcing a preferred count or depth.
+7. No aggregate metric is attributed to a component without evidence.
+8. No example terminology, unsupported content, framework labels, or self-check appears.
+9. The response matches the requested depth and contains only the requested artifact.
 
-**Assert the point.** Headings are claims, not labels.
+## References
 
-**Parallel grammar across peers.** All noun phrases, or all complete sentences — do not mix forms within a peer set.
-
-**Concise.** Assertion headings run 4–10 words. Heading grammar patterns with parallel/non-parallel examples are in `references/report-skeleton.md`. Ordering rationale: `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md`.
-
-## Length Budget Guidance
-
-| Target length | Key-line points | Pyramid depth | Headings |
-|---|---|---|---|
-| ~500 words | 2–3 | 1 level | 2–3 |
-| ~2,000 words | 3–4 | 2 levels | 6–12 |
-| ~10,000+ words | 3–5 (prefer 3–4) | 3–4 levels | 20–40+ |
-
-For documents over 2,000 words, add an executive summary restating the governing thought and compressed key line before the introduction.
-
-## Self-Check Before Returning
-
-Run all six gates before returning Pass 1 output or Pass 2 prose to the user. Any failure requires revision before continuing.
-
-1. **Governing thought in the first paragraph?** If the Answer appears after the first paragraph of the document body, the structure is inverted.
-2. **SCQA introduction completes before the key line begins?** The introduction establishes Situation, Complication, and governs thought before any supporting argument appears.
-3. **Every key-line point answers the question the governing thought raises?** Apply the vertical Q/A dialogue: state the governing thought, ask what question it raises, confirm each key-line point answers that exact question — not a related or adjacent one.
-4. **Peer sets MECE, same-kind, and consistent logic mode?** Apply the plural-noun test. Confirm no two peers overlap. Confirm the parent claim accurately summarizes all peers using a single reasoning mode (deductive or inductive, not both). (`minto-p96-mece`, `minto-p63-deduction-induction`)
-5. **One ordering rule applied consistently across the key line?** Name the ordering rule used (deductive / chronological / structural / comparative). Confirm every peer in the key line belongs in that order — no stray points from a different order type.
-6. **Would cutting any leaf leave a question unanswered?** Read each leaf and ask: "If this were removed, would the reader have a logical question that the document is now obligated to answer?" If no, the leaf is bloat and should be cut.
-
-Any gate that fails → revise the outline before writing more prose. For a full structural audit of existing writing, direct to `pyramid-audit`.
-
-## Common Long-Form Mistakes
-
-**Opening with background instead of SCQA.** The introduction spans two pages of context and history before stating what changed or what the document argues. The reader finishes the introduction not knowing the governing thought. Fix: build the SCQA explicitly, with Complication and Answer as the final moves. (`minto-p22-scqa`)
-
-**Process description substituting for findings.** "We conducted 24 interviews, analyzed three years of sales data, and ran a competitive benchmarking study." This describes the work, not what the work found. Findings answer the reader's question; process description does not. The key line should be asserted findings, not research methods.
-
-**Evidence dumped in appendix-style sections.** A "Data" or "Background" or "Evidence" section that precedes the argument, or sits alongside it as a peer, inverts the pyramid. Evidence belongs directly under the specific point it supports, at the level where the reader needs it to accept that point.
-
-**Topic-led section headings.** "Market conditions," "Team capacity," "Financial overview" — these are containers. Each heading should assert the point that section proves: "Market contraction reduces total addressable revenue by 18%." `minto-p5-pyramid-sorting`
-
-**Conclusion as document summary.** Recapping all section points in the conclusion restates what the reader already read. The conclusion's job is to restate the governing thought — the apex claim — in light of the evidence the pyramid provided. One well-chosen sentence does this better than a bulleted recap.
-
-## Additional Resources
-
-- **`references/report-skeleton.md`** — Universal document skeleton, five document-type variants, section-intro paragraph templates, and heading grammar patterns with parallel/non-parallel examples
-- **`references/key-line-examples.md`** — Three fully worked key-line examples at decreasing abstraction: Q3 product strategy (inductive), infrastructure migration proposal (chronological), customer research synthesis (structural/comparative)
-
-Canonical rule detail:
-
-```
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/mece-grouping.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md
-${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md
-```
+- `references/report-skeleton.md` — detailed document patterns; use structure only
+- `references/key-line-examples.md` — grouping examples; never use their facts as task evidence
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/mece-grouping.md`
+- `${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md`

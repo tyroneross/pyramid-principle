@@ -53,8 +53,7 @@ Mixed grammar signals mixed logical structure. Parallel grammar signals that the
 
 ## 3. Length Discipline
 
-Ideal: under 12 words.
-Maximum: under 16 words.
+Prefer the shortest headline that preserves the claim. Treat word count as a diagnostic, not a pass/fail rule.
 
 A headline that runs 20+ words is usually a paragraph opener masquerading as a headline. The excess typically falls into one of three categories:
 
@@ -64,7 +63,7 @@ A headline that runs 20+ words is usually a paragraph opener masquerading as a h
 
 **Context that belongs in the SCQA:** "Given that we changed pricing in June and were tracking whether this would affect mid-market accounts specifically, the results show conversion dropped 31% in that segment." The setup belongs in the opening slides. The headline is the finding: "Mid-market conversion dropped 31% in the six weeks following the pricing change."
 
-**When a claim genuinely requires more than 16 words:** Break it into two slides. The first slide states the setup claim; the second states the conclusion. This is almost always a better structure than one overloaded headline.
+**When a headline is difficult to grasp at a glance:** Check whether it contains multiple claims, avoidable setup, or qualifications that belong with the evidence. Split the slide only when the content makes more than one point; keep a longer headline when every word is required for one precise claim.
 
 ---
 

@@ -57,6 +57,18 @@ Without the parent inference ("Performance degradation is now visibly affecting 
 
 LLMs often produce lists that are structurally ambiguous — they could be read as a deductive chain or as independent inductive members, but neither reading fully holds. The parent claim doesn't accurately summarize the list under either interpretation.
 
+### 6. Unsupported Specifics
+
+LLMs often make a sound structure appear more persuasive by adding a cause, metric, consequence, or degree of certainty that the source does not provide. The result may read cleanly while becoming factually unreliable.
+
+**Pyramid violation:** Unsupported material cannot serve as valid evidence. Keep supplied facts distinct from interpretations and recommendations, and state uncertainty when the evidence does not establish a cause or conclusion.
+
+### 7. Example Leakage
+
+LLMs can copy names, facts, or conclusions from an instructional example into the requested artifact. This creates content that is structurally plausible but unrelated to the user's source material.
+
+**Pyramid violation:** An example demonstrates a logical shape; it is not a support for the current governing thought. Use its structure only.
+
 ---
 
 ## Prompt Patterns That Enforce Pyramid Structure
@@ -74,10 +86,10 @@ Instruct the model to identify the reader's question before producing any output
 
 ### Pattern 2: Require Answer-First Output
 
-Explicitly prohibit background-before-answer structure.
+Require the Answer before its support while allowing only necessary context first.
 
 **In-prompt instruction:**
-> "State the governing thought — the single most important claim — in the first sentence of the document body. Do not open with context, history, or qualification. The supporting detail follows the governing thought, not before it."
+> "State the governing thought before its supporting points. If the reader cannot understand it without context, give only the context required to understand it first. Do not delay the Answer with history, process, or general background."
 
 **Why it works:** Overrides the default associative pattern. The model must commit to a claim before producing support, which makes it harder to produce vague openings.
 
@@ -117,6 +129,27 @@ Require the model to verify structural validity before finalizing any output.
 
 **Why it works:** Self-checking catches violations that instruction-following alone misses. The model evaluates its own output against the structural rules rather than assuming structure was followed.
 
+### Pattern 7: Ground Claims and Label Interpretation
+
+**In-prompt instruction:**
+> "Support every factual claim with supplied evidence or a cited source. Label new inferences and recommendations as interpretations, identify the evidence supporting them, and do not invent missing facts, causes, metrics, or certainty."
+
+**Why it works:** Prevents a structurally strong output from becoming less reliable than its source material.
+
+### Pattern 8: Isolate Examples
+
+**In-prompt instruction:**
+> "Treat examples as structural patterns only. Do not copy their names, facts, scenarios, or conclusions unless the user supplied them for this task."
+
+**Why it works:** Separates prompt scaffolding from task evidence.
+
+### Pattern 9: Return the Requested Artifact
+
+**In-prompt instruction:**
+> "Return only the requested artifact by default. Include outlines, framework labels, drafting notes, assumptions, or self-check commentary only when requested or when unresolved ambiguity prevents a reliable result."
+
+**Why it works:** Keeps drafting machinery from obscuring the output the reader needs.
+
 ---
 
 ## Reusable Template Skeleton
@@ -130,12 +163,13 @@ The reader's question is: [specific question in the reader's mind].
 
 Structure requirements:
 1. Open with SCQA if context is needed: Situation (shared), Complication (new), Answer (governing thought). Otherwise open directly with the governing thought.
-2. The governing thought directly answers the reader's question. State it in the first sentence of the document body.
-3. Support the governing thought with [N] key points. Each key point must be the same kind of thing, named by a specific plural noun: [preferred noun if known, e.g. "risks", "steps", "reasons"].
+2. The governing thought directly answers the reader's question. State it before its supporting points; include only necessary context first.
+3. Support the governing thought with the distinct points it requires. Each key point must perform the same logical role, named by a specific plural noun: [preferred noun if known, e.g. "risks", "steps", "reasons"].
 4. Each group of sub-points uses either deductive logic (chain → therefore conclusion) or inductive logic (independent members → pattern inference). Declare the mode for each group.
-5. Before returning, self-check: does every parent accurately summarize its children? Does every peer set pass the plural-noun test? Fix violations.
+5. Ground factual claims in supplied evidence. Label new interpretations and recommendations. Do not copy content from examples.
+6. Before returning, self-check: does every parent accurately summarize its children? Does every peer set pass the plural-noun test? Fix violations, then return only the requested artifact.
 
 Content constraints: [any topic-specific constraints, e.g. "focus on Q3 execution risks only", "no more than 400 words", "use data from the attached report"].
 ```
 
-This skeleton is approximately 160 words. Expand or compress based on the model and task. The critical elements are: (1) reader's question stated explicitly, (2) answer-first requirement, (3) plural-noun grouping requirement, (4) deductive/inductive mode declaration, (5) self-check requirement.
+Expand or compress the skeleton based on the model and task. The critical elements are the reader's question, Answer before support, same-role grouping, consistent reasoning mode, evidence discipline, example isolation, and an artifact-only default.

@@ -2,6 +2,8 @@
 
 Slide-by-slide templates for six common presentation types. Each template names the deck type, when it fits, the logic mode and ordering rule that governs it, typical slide count, and a worked example with assertion-style headlines throughout.
 
+Slide numbers and counts in these templates illustrate complete storylines; they are not universal correctness requirements. Adapt them to the audience and evidence while keeping the governing thought before its support.
+
 All rules derive from Barbara Minto, *The Pyramid Principle* (2009 revised edition). Source anchors: `minto-p22-scqa`, `minto-p96-mece`, `minto-p63-deduction-induction`, `minto-p17-vertical-qa`.
 
 ---
@@ -41,7 +43,7 @@ All rules derive from Barbara Minto, *The Pyramid Principle* (2009 revised editi
 
 ### Notes
 
-Do not bury the recommendation. Audiences that see "Background → Analysis → Recommendation" structure spend the first two-thirds of the deck uncertain whether they are being asked to decide anything. State the recommendation on Slide 3. Audiences can engage critically with a recommendation they've seen — they cannot engage critically with a recommendation they haven't seen yet.
+Do not bury the recommendation. Audiences that see "Background → Analysis → Recommendation" structure remain uncertain whether they are being asked to decide anything. State the recommendation as soon as the audience has enough context to understand it and before supporting evidence. Audiences can engage critically with a recommendation they have seen; they cannot engage critically with one they have not seen yet.
 
 ### Worked Example: Infra Proposal
 
@@ -324,7 +326,7 @@ Headlines on chart slides must name the conclusion, not describe the chart. "Mon
 
 ### Notes
 
-Board decks fail most often when they bury the decision in slide 11 of 12. State the governing thought — including the decision required — on Slide 2. The board can then evaluate everything that follows in light of the ask, rather than sitting through twelve slides wondering what they are being asked to do.
+Board decks fail when they make directors process evidence before revealing the decision required. State the governing thought as soon as the board has the minimum context needed and before supporting evidence. The board can then evaluate everything that follows in light of the ask.
 
 Flags and risks belong in dedicated slides, not embedded in performance slides. A risk sentence on Slide 4 in a financial performance section is invisible. A dedicated slide titled "One operational risk warrants board attention this quarter: [specific claim]" is visible and actionable.
 

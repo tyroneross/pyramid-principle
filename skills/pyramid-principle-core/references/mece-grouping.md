@@ -194,5 +194,5 @@ Given the parent's claim, is there a significant member the set is missing that 
 **5. Parent is an inference, not a container?**
 Change one child item substantially. If the parent label remains valid, it's a container. An inference label would break.
 
-**6. Count within bounds?**
-The set has 3–5 members. If fewer than 2, the grouping adds no structure. If more than 5, look for a valid sub-categorization.
+**6. Does the count preserve the meaning?**
+Do not add an item to reach a preferred number or remove a material item solely to meet a limit. When a flat set becomes difficult to scan, look for a valid sub-categorization. If no valid category exists, keep the necessary peers rather than forcing false structure.

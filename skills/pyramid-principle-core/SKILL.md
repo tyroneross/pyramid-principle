@@ -1,6 +1,6 @@
 ---
 name: pyramid-principle-core
-description: Use when user asks about pyramid principle, Minto, SCQA, MECE, governing thought, key line, vertical/horizontal logic, or answer-first structure. Canonical rule library for structured communication.
+description: Use when user asks about the Pyramid Principle, Minto, SCQA, MECE, governing thought, key line, vertical or horizontal logic, deductive or inductive reasoning, or answer-first structure. Canonical rule library for sibling writing skills.
 version: 0.1.0
 ---
 
@@ -8,136 +8,123 @@ version: 0.1.0
 
 ## Purpose
 
-This skill supplies the canonical rule library for Barbara Minto's Pyramid Principle. It establishes shared definitions and structural rules that every other skill in this plugin depends on. It does not produce finished documents or audit existing writing — those functions belong to sibling skills that load these references and apply them to specific formats and tasks.
+Supply the canonical structural rules shared by every skill in this plugin. This skill explains and governs the framework. It does not draft or audit a finished artifact.
 
-Load this skill at the start of any structured communication work to orient the session toward the correct framework. Treat its rules as authoritative. If a sibling skill produces output that conflicts with a rule stated here, this skill takes precedence.
+Source material: Barbara Minto, *The Pyramid Principle* (2009 revised edition). Verified quotations and page citations live in `${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md`.
 
-Source material: Barbara Minto, *The Pyramid Principle* (2009 revised edition). Verbatim quotes with stable anchor IDs are in `${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md`.
+## Route the Request
 
-## When to Invoke
+Load this skill first for any Pyramid Principle task, then hand off when:
 
-Invoke this skill when:
+- the user wants an email, memo, executive summary, one-pager, BLUF, Slack update, or status note → `pyramid-short-form`
+- the user wants a report, brief, proposal, or multi-section document → `pyramid-long-form`
+- the user wants a deck or presentation storyline → `pyramid-presentation`
+- the user wants existing writing diagnosed → `pyramid-audit`
 
-- The user asks what the Pyramid Principle is, how it works, or why it matters
-- The user asks about SCQA, MECE, vertical logic, horizontal logic, deductive vs. inductive reasoning, logical order, or the governing thought
-- Any sibling skill encounters a rule question before proceeding
-- A new sibling skill is being authored and needs its rule grounding established
+## Operating Contract for Generated Output
 
-Hand off after supplying rules:
+Every sibling skill applies these rules before its medium-specific guidance:
 
-- User wants to write a short email or memo → `pyramid-short-form`
-- User wants to write a long document, report, or proposal → `pyramid-long-form`
-- User wants to build a presentation → `pyramid-presentation`
-- User wants existing writing diagnosed → `pyramid-audit`
+1. **The agent states the main answer before its supporting points.** If the reader cannot understand the answer without context, the agent gives only the context required to understand it, then states the answer before evidence or detail.
+2. **The agent grounds every factual claim in supplied evidence or a cited source.** When the agent adds a requested inference or recommendation, it distinguishes that statement from supplied fact and identifies the evidence supporting it. The agent does not invent missing facts, causes, metrics, or certainty.
+3. **The agent uses examples as structural patterns, not source material.** It does not copy an example's names, facts, scenario, terminology, or conclusion unless the user supplied them for the current task.
+4. **The agent groups peers only when they answer the same parent question and perform the same logical role.** It groups reasons with reasons, evidence with evidence, steps with steps, findings with findings, and risks with risks. Different topics may remain peers when one accurate role label describes every point.
+5. **The agent returns the requested artifact by default.** It does not include outlines, framework labels, drafting notes, assumptions, or self-check commentary unless the user requests them or unresolved ambiguity prevents a reliable artifact.
+6. **The agent treats counts and positions as format defaults, not correctness tests.** It adjusts them to the reader, medium, evidence, and complexity while preserving answer-first structure and valid grouping.
 
-Do not draft document sections from this skill. State the relevant rules, then explicitly name the next skill to load.
+Evidence discipline, example isolation, and artifact-only output are modern safeguards added for LLM use. The structural rules below are grounded in Minto's framework and identified by source anchor.
 
-## The Three Rules of Valid Pyramid Groupings
+## Three Rules of a Valid Pyramid
 
-Every valid pyramid satisfies three rules simultaneously. Violating any one of them breaks the structure, regardless of how well the others are observed.
+Every grouping must satisfy all three rules.
 
-**Rule 1: Ideas at any level summarize the ideas grouped below them.**
+### 1. The parent summarizes its children
 
-The idea at each level is not a label or topic heading — it is a substantive claim that the items below it collectively prove or explain. The apex of the pyramid (the governing thought) is the single most important point, and every subordinate level is a logical answer to the question the level above raises. Nothing appears in the pyramid unless it is either the top-level claim or a direct support for a claim above it.
+The parent is a substantive claim that the points below collectively prove, explain, or support. It is not a topic or container label. The governing thought is the apex claim, and every lower level directly supports the claim above it. (`minto-p5-pyramid-sorting`)
 
-**Rule 2: Ideas within a grouping are the same kind of thing.**
+### 2. Peers perform the same logical role
 
-Peers on the same level share a common question-type they answer. A grouping of reasons, a grouping of steps, a grouping of risks, a grouping of criteria — each is a valid set because every member answers the same question. A grouping that mixes a reason, a step, and a piece of evidence is not a valid set; it has no single parent claim that accurately summarizes all three.
+Every peer answers the same parent question and belongs to one named kind. The agent tests the parent question and role before separating different topics. A set fails only when no accurate parent question and role label describes every peer. (`minto-p5-pyramid-sorting`, `minto-p96-mece`)
 
-**Rule 3: Ideas within a grouping follow a logical order.**
+### 3. Peers follow one logical order
 
-The sequence of peers is chosen, not arbitrary. One of four valid orders applies to every grouping (see The Four Logical Orders below). The order reveals the logic that unifies the set, which in turn makes the parent claim accurate and testable.
+The agent chooses the order that matches what the set represents and does not mix order rules within one peer set. (`minto-p5-pyramid-sorting`)
 
-Source grounding: `minto-p5-pyramid-sorting`. Full canonical statement, the magical-number constraint (prefer 3, fine up to ~5, break into categories beyond), a worked flat-to-pyramid example, and failure signals in `references/rules-of-pyramid.md`.
+## Four Logical Orders
 
-## The Four Logical Orders
+- **Deductive:** Each point derives from the prior point and ends in a conclusion.
+- **Chronological:** Steps or events follow time or process sequence.
+- **Structural:** Points are explicit parts of a whole or categories within a defined structure.
+- **Comparative:** Points are ranked by an explicit criterion.
 
-Apply exactly one order per peer set, chosen by what that set represents:
+The text must show the order. List position alone does not establish comparative order.
 
-- **Deductive order** — a chain of reasoning where each point follows from the prior, ending in a "therefore" conclusion. The parent summarizes the final conclusion that the chain reaches. Use when the set forms an argument or a syllogism.
-- **Chronological order** — steps in time sequence from first to last. Use when the set represents a process, action plan, or sequence of events. The parent names the outcome the steps produce.
-- **Structural order** — parts of a whole, arranged spatially or categorically (north to south, top to bottom, function to function). Use when describing a system, organization, geography, or structure. The parent names the whole.
-- **Comparative order** — items ranked by a criterion (largest to smallest, highest to lowest priority, strongest to weakest case). Use when the set represents options, alternatives, or ranked findings. The parent states the basis of comparison or the leading conclusion from it.
+## Vertical Logic: Question and Answer
 
-## The Two Relationships Within a Pyramid
+Every asserted point raises a reader question. The next level answers that exact question:
 
-Every pyramid contains exactly two relationship types: vertical and horizontal. Both must be valid for the structure to hold.
+- `Why?` asks for reasons.
+- `How?` asks for steps or a mechanism.
+- `Why do you say that?` asks for evidence.
 
-### Vertical: Question/Answer Dialogue
+Material that answers a different question belongs under another parent or outside the artifact. (`minto-p17-vertical-qa`)
 
-Every idea in the pyramid raises a question in the reader's mind. The level immediately below answers that question. This is not a metaphor — it is the operational rule for deciding what goes where.
+## Horizontal Logic: Deduction or Induction
 
-When a point is asserted, the reader automatically asks one of three questions: *Why?* (seeking a justification), *How?* (seeking a method or mechanism), or *Why do you say that?* (seeking evidence). The writer is obligated to answer that specific question on the next line down. If the material on the line below answers a different question, it belongs elsewhere — or not at all. Information that does not answer the reader's current question must wait until that question is raised, which may be several levels down, or never.
+Every peer set uses one reasoning mode:
 
-Source grounding: `minto-p17-vertical-qa`. The "Why? / How? / Why do you say that?" pattern with worked examples is in `references/vertical-horizontal-logic.md`.
+- **Deductive:** Each point depends on the prior point; the parent states the conclusion.
+- **Inductive:** Each point independently belongs to one like category; the parent states the inference supported by the set.
 
-### Horizontal: Deductive or Inductive Logic
+The agent does not mix deductive steps and inductive members within one peer set. (`minto-p63-deduction-induction`)
 
-Peers on the same level are related to each other by one of two reasoning modes, and the choice of mode determines how the parent claim is formed:
+## SCQA Introduction
 
-**Deductive** — each point derives from the point before it. The sequence is a chain; remove any link and it breaks. The parent summarizes the final conclusion, resting most heavily on the last point. Example: major premise → minor premise → therefore conclusion.
+Use an introduction only when the reader needs common ground before receiving the governing thought:
 
-**Inductive** — each point is an independent member of a like category. No point derives from another. The parent makes an inference about the set as a whole — a claim true given all members but not deducible from any single one.
+- **Situation:** Shared context the reader accepts.
+- **Complication:** The change, tension, or problem that makes the Situation unstable.
+- **Question:** The question naturally raised by the Complication; it may remain implicit.
+- **Answer:** The governing thought, stated before supporting points.
 
-A peer group uses one mode or the other — never both. Mixing modes breaks the parent claim: a summary that works for a deductive chain will not work for an inductive set.
-
-Source grounding: `minto-p63-deduction-induction`. Worked examples of deductive groupings, inductive groupings, and a mixed-logic violation that illustrates why mixing fails, all in `references/vertical-horizontal-logic.md`.
-
-## SCQA Introductions
-
-Every document, email, or presentation opens with a preamble that establishes common ground before introducing new thinking. Without this, the reader does not know why the governing thought is relevant. The SCQA pattern builds that common ground in four moves:
-
-- **Situation** — context the reader already accepts as true. Facts or recent developments that establish shared starting ground. Brief — the reader should recognize it immediately.
-- **Complication** — the change, tension, or problem that makes the Situation unstable. Without a Complication, the reader has no reason to care about the Answer.
-- **Question** — the question the Complication raises in the reader's mind. Often implicit. Typical forms: "What should we do?" / "Why is this happening?" / "How can we fix it?"
-- **Answer** — the governing thought: the document's central claim. The apex of the pyramid. State it explicitly and early.
-
-The introduction is not the pyramid. It is the preamble that earns the reader's attention. The SCQA contains no argument — it sets up the argument the pyramid makes.
-
-Source grounding: `minto-p22-scqa`. Medium-specific guidance (compressed 2–3 sentence form for short-form vs. full-paragraph treatment for long-form vs. opening slides for presentations), two worked examples (one good, one bad with a rewrite), and common pitfalls are in `references/scqa-pattern.md`.
+When context is already shared, begin with the Complication or Answer. SCQA is a preamble, not a mandatory sentence or slide count. (`minto-p22-scqa`)
 
 ## MECE Grouping
 
-Every peer set must be Mutually Exclusive and Collectively Exhaustive (MECE). These are not aspirational standards — they are pass/fail tests for every grouping in the pyramid.
+The agent checks mutual exclusivity and collective exhaustiveness separately:
 
-**Mutually exclusive** means no item in a peer set belongs in more than one peer. If two items overlap — share the same underlying cause or describe the same phenomenon from different angles — the grouping is broken. Overlap signals the categorization is too coarse or that items need an intermediate level.
+- **Mutually exclusive:** No two peers describe the same underlying phenomenon within the parent scope.
+- **Collectively exhaustive:** The set covers the relevant universe defined by the parent scope.
 
-**Collectively exhaustive** means the peer set accounts for all relevant instances of the thing grouped. A significant omission invalidates the parent's summary. Exhaustiveness is relative to the question the parent answers — not an absolute requirement to list every possible instance.
+The agent verifies exhaustiveness only when supplied content or cited domain evidence establishes the relevant universe. A parent that asserts a number or uses `all` claims completeness; it does not prove completeness. When the universe is undefined, the agent states that exhaustiveness is not verifiable rather than inventing a missing item or declaring the set complete. (`minto-p96-mece`)
 
-**The plural-noun test** — name the peer set with a plural noun before checking it. "Three risks to the Q3 launch schedule" is a valid plural-noun label: it implies a specific question (what risks?), a specific scope (Q3 launch), and a reasonably bounded list. "Three things to consider" is not valid: "things" imposes no constraint, so the set cannot be genuinely exclusive or exhaustive. If the label does not commit to a kind, the grouping cannot be MECE.
+Before accepting a peer set, the agent:
 
-**Name the category above the items** — the parent-level idea is the inference from the set, not a container label. "Issues" is a container. "Three execution dependencies that put the Q3 launch at risk" is an inference. The inference is what carries meaning; the container only carries volume.
+1. writes the parent question;
+2. names the shared role with a specific plural noun;
+3. checks overlap;
+4. checks completeness only against a defined universe;
+5. confirms the parent is an inference, not a container;
+6. uses the number of peers the meaning requires and regroups only when a valid category exists.
 
-Source grounding: `minto-p96-mece` (Minto's direct definition of mutually exclusive and collectively exhaustive) and `minto-p7-magical-number-seven` (cognitive basis for categorization and bounded group size). Worked examples for valid vs. broken labels, plural-noun failures, and a validation checklist in `references/mece-grouping.md`.
+Minto's group-size observation makes a growing flat list a cue to test categorization, not a universal pass/fail count. (`minto-p7-magical-number-seven`)
 
-## Composition for Downstream Skills
+## Source Anchors
 
-Sibling skills load the canonical detail files from this skill's references directory using the plugin root variable. The standard load paths are:
+- `minto-p5-pyramid-sorting` — pyramid rules and logical orders
+- `minto-p7-magical-number-seven` — group-size observation
+- `minto-p17-vertical-qa` — vertical question-and-answer logic
+- `minto-p22-scqa` — SCQA introduction
+- `minto-p63-deduction-induction` — deductive and inductive reasoning
+- `minto-p96-mece` — mutual exclusivity and collective exhaustiveness
 
-```
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/rules-of-pyramid.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/scqa-pattern.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/vertical-horizontal-logic.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/mece-grouping.md
-${CLAUDE_PLUGIN_ROOT}/skills/pyramid-principle-core/references/llm-adaptation.md
-```
+## References
 
-Verbatim source quotes with stable anchor IDs live at:
+- `references/rules-of-pyramid.md` — detailed rules and worked examples
+- `references/scqa-pattern.md` — medium-specific SCQA guidance and examples
+- `references/vertical-horizontal-logic.md` — detailed logic examples
+- `references/mece-grouping.md` — grouping diagnostics and examples
+- `references/llm-adaptation.md` — modern LLM failure modes and prompt patterns
+- `${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md`
 
-```
-${CLAUDE_PLUGIN_ROOT}/docs/source-anchors.md
-```
-
-Every rule stated in a sibling skill must cite the anchor ID from `source-anchors.md` that grounds it. This ensures source traceability across the plugin as it evolves.
-
-## LLM Adaptation Note
-
-The rules in this skill derive directly from Minto's 2009 text. The file `references/llm-adaptation.md` extends those rules into the specific context of LLM-generated output, where distinctive failure modes appear: background-before-answer structure, weak category labels, mixed-kind bullet lists, evidence without inference, and deductive-inductive confusion. That file provides prompt patterns for enforcing pyramid structure in generation tasks and a reusable fillable template skeleton. It is explicitly marked as a modern extension not present in the source.
-
-## Additional Resources
-
-- **`references/rules-of-pyramid.md`** — Canonical statement of all three rules, all four logical orders, magical-number constraint, flat-to-pyramid worked example, and failure signals
-- **`references/scqa-pattern.md`** — SCQA definition with verbatim source quote, medium-specific guidance, two worked examples, and common pitfalls
-- **`references/vertical-horizontal-logic.md`** — Vertical Q/A dialogue mechanism and horizontal deductive-vs-inductive distinction with verbatim quotes, worked examples, and a mixed-logic violation
-- **`references/mece-grouping.md`** — MECE definition, plural-noun test, category-label guidance, worked examples, and a validation checklist
-- **`references/llm-adaptation.md`** — Modern extension: LLM failure modes, prompt patterns that enforce pyramid structure, and a reusable template skeleton
+Reference examples are never task evidence. Load them only when detailed explanation or diagnosis requires them, and do not copy their content into a user artifact.

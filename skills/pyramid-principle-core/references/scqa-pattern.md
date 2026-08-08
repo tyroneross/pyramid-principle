@@ -80,9 +80,9 @@ State the Answer early and explicitly. Answer-first structure is the purpose of 
 
 ### Short-Form (Email, Memo, Slack message, Brief note)
 
-Compress all four SCQA moves into 2–3 sentences, or as few words as the shared context permits. In established working relationships where Situation is fully shared, the SCQA can collapse to Complication + Answer.
+Compress SCQA into as few sentences as the reader needs. In established working relationships where Situation is fully shared, it can collapse to Complication + Answer or the Answer alone.
 
-Target: The reader should understand the context, the urgency, and the central claim within the first 2–3 sentences of reading.
+Target: Give the reader the central claim before supporting points. Include only the context and urgency required to understand that claim first.
 
 Example (compressed):
 > "The vendor confirmed today that the delivery date slips to Q2 (Situation + Complication). To keep the product launch on track, we need to authorize the expedited production option by end of week (Answer)."
@@ -97,15 +97,15 @@ Target: The introduction runs no longer than one page. The reader finishes it kn
 
 ### Presentation (Slides)
 
-Map the SCQA across opening slides, not prose. A common pattern:
+Map only the SCQA moves the audience needs across opening slides. A common pattern:
 
-- **Slide 1 (title or context slide):** Situation — the state of affairs the audience already knows
-- **Slide 2 (so what slide):** Complication — why the current situation is insufficient or has changed
-- **Slide 3 (governing thought or recommendation slide):** Answer — the central claim, stated as the slide title, before evidence or detail
+- **Situation slide, when needed:** the state of affairs the audience already knows
+- **Complication slide, when needed:** why the current situation is insufficient or has changed
+- **Governing-thought slide:** the central claim, stated as the slide title before evidence or detail
 
-The Question may appear on Slide 2 as a framing device ("So we face a critical question:") or may be entirely implicit.
+The Question may appear as a framing device or remain implicit.
 
-The Answer slide is the most important slide in the deck. Many presentations bury the governing thought halfway through. In pyramid structure, the Answer appears before the evidence — often as the third slide, after the Situation and Complication have prepared the audience.
+The Answer slide is the most important slide in the deck. Many presentations bury the governing thought halfway through. In pyramid structure, the Answer appears as soon as the audience has enough context to understand it and before supporting evidence begins; no universal slide number applies.
 
 ---
 

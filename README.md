@@ -1,10 +1,10 @@
 # pyramid-principle
 
-Barbara Minto's Pyramid Principle as composable skills for professional writing.
+Turn source material into decision-ready professional writing: state the answer before support, group claims logically, and distinguish evidence from interpretation.
 
 ## What it does
 
-This plugin packages the Pyramid Principle as five discrete, composable skills designed to be invoked by larger writing workflows — agents, plugins, or directly by Claude Code. Skills operate in two modes: generative (draft, outline, structure) and evaluative (audit, diagnose, critique). Each skill is independently addressable by external agents using its skill ID, and they share canonical source material through `pyramid-principle-core`.
+This plugin packages Barbara Minto's Pyramid Principle as five discrete, composable skills for agents and writing workflows. Generative skills draft and structure requested artifacts; the audit skill diagnoses existing writing. The shared core keeps the structural rules, evidence safeguards, example isolation, and output contract consistent across every format.
 
 ## The 5 Skills
 
@@ -26,11 +26,11 @@ Canonical rules and definitions live in `pyramid-principle-core/references/` —
 
 ## Status
 
-v0.1.2 — composable Codex + Claude packaging. 5 source anchors ship with this version; additional anchors planned for v0.2.
+v0.1.2 — composable Codex + Claude packaging. 6 source anchors ship with this version; additional anchors planned for v0.2.
 
 ## License
 
-MIT
+Apache-2.0
 
 ## Codex
 
@@ -44,4 +44,3 @@ Primary Codex surface:
 - MCP config from `(none)` when present
 
 Install the package from this package root using your current Codex plugin install flow. The Codex package is additive only: Claude-specific hooks, slash commands, and agent wiring remain unchanged for Claude Code.
-
