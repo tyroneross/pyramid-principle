@@ -4,7 +4,7 @@ Turn source material into decision-ready professional writing: validate the clai
 
 ## What it does
 
-This plugin packages Barbara Minto's Pyramid Principle and a separate source-integrity layer as six discrete, composable skills. Source integrity checks claims and data. The core and generative skills build the structure and storyline. The audit skill diagnoses structural logic.
+This plugin packages Barbara Minto's Pyramid Principle and an optional source-integrity layer as six discrete, composable skills. The default path is the core plus one writing skill. Add source integrity when the work requires fact checking, material data, or strict source control.
 
 ## The 6 Skills
 
@@ -19,28 +19,40 @@ This plugin packages Barbara Minto's Pyramid Principle and a separate source-int
 
 ## Composition
 
-The plugin separates claim integrity from communication structure:
+The plugin keeps claim integrity separate from communication structure:
 
-1. A separate `pyramid-source-integrity` pre-check validates supplied claims, calculations, scope, and external facts when tools are available. Every data point receives a specific source and locator, confidence level and reason, and permitted-use action before entering the internal claim packet.
-2. `pyramid-principle-core` and a format skill select, group, order, and express only the packet's claims.
-3. A separate `pyramid-source-integrity` post-check compares the finished artifact with the original packet and removes or corrects unsupported content.
+1. For ordinary structure-only writing, `pyramid-principle-core` and one format skill build the artifact directly.
+2. When facts or data materially affect the output, `pyramid-source-integrity` first gives every data point a specific source and locator, confidence level, and confidence reason.
+3. The core and format skill structure the cleared content. A source-integrity recheck then removes or corrects unsupported additions.
 
-For smaller drafting models and strict source-bound work, the host should run these as three model calls and use its strongest available verification model for the pre-check and post-check. Deterministic tools should verify material calculations. A capable host may keep the operations as distinct internal stages, but the structure skill never approves its own factual output.
+Strict trace mode is optional. Use it for `use only these facts`, audit-ready or high-risk work, conflicting sources, or separate verification around a smaller drafting model. It adds claim IDs, a source register, and trace tags. Deterministic tools should verify material calculations.
 
 Canonical Pyramid Principle rules live in `pyramid-principle-core/references/`. Fact and data rules live in `pyramid-source-integrity/SKILL.md`. Each responsibility has one owner, and every skill remains independently addressable by its skill ID.
 
 ## Source and confidence contract
 
-Every factual claim and derived value must retain a source ID and exact locator. Every source ID resolves to a complete source-register record. A locator identifies the prompt fact, quotation, URL section, file page, sheet and cells, table row, query, or calculation inputs that support the point. Bare labels such as `user input`, `company data`, `derived`, a dash, or a domain name do not pass.
+When source integrity is active, every factual claim and derived value must retain a specific source, exact locator, confidence level, and reason. A locator identifies the prompt fact, quotation, URL section, file page, sheet and cells, table row, query, or calculation inputs that support the point. Bare labels such as `user input`, `company data`, `derived`, a dash, or a domain name do not pass. Strict mode adds source IDs and a source register only when the trace needs them.
 
 | Confidence | Required drafting action |
 |---|---|
-| High | State directly with its source trace. |
+| High | State directly without strengthening the source. |
 | Medium | State with source attribution or an explicit limitation. |
 | Low | Keep out of central support; use only as a limitation or verification lead. |
 | Unverified | Exclude from the artifact as fact. |
 
 Every level requires a reason covering source quality, directness of support, corroboration or conflict, and data validation. Confidence is qualitative evidence judgment, not an invented probability. A derived value cannot exceed the confidence of its weakest required input.
+
+Confidence itself controls the drafting action. The plugin does not repeat the same instruction in a separate `permitted use` field.
+
+## Direct writing contract
+
+Every writing skill applies the same parent rules:
+
+- State the answer before support and give each sentence one main claim.
+- Name a specific actor, use an active verb, and state a specific outcome.
+- Replace vague adjectives and adverbs with validated measures when available; never invent data to sound precise.
+- Carry key terms from each parent claim into its supporting statements so the relationship remains visible.
+- Connect sentences from given information to new information and make peer bullets grammatically and logically parallel.
 
 ## Capability boundary
 

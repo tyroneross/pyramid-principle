@@ -1,14 +1,13 @@
 ---
 name: pyramid-long-form
 description: Use when user asks to structure or draft a report, brief, proposal, research writeup, strategy document, whitepaper, or other multi-section professional writing using the Pyramid Principle.
-version: 0.1.0
 ---
 
 # Pyramid Long-Form
 
 ## Purpose
 
-Structure or draft a multi-section professional document. When the task includes sources, facts, or data, receive the internal claim packet produced by a separate `pyramid-source-integrity` pre-check. Then load `pyramid-principle-core` for structure.
+Structure or draft a multi-section professional document. Load `pyramid-principle-core` for structure and direct language. Add a `pyramid-source-integrity` check when facts or data materially affect the output; receive a claim packet only when strict trace mode applies.
 
 This skill handles documents that require developed sections or usually exceed about 500 words. It does not audit existing writing or produce slide storylines.
 
@@ -29,7 +28,7 @@ Before structuring the document, the agent identifies:
 
 1. **Reader question:** What must the document answer?
 2. **Governing thought:** Which decision, recommendation, or finding did the user supply?
-3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the document to use, and what source, confidence, and permitted-use record accompanies each data point?
+3. **Cleared claims:** When source integrity applies, which facts, calculations, inferences, recommendations, and limitations may the document use, and what source, locator, confidence, and reason accompany each data point?
 4. **Requested depth:** Outline, detailed outline, section draft, or full document?
 5. **Constraints:** Audience, length, tone, required sections, sensitivity, and citation format.
 
@@ -90,9 +89,9 @@ When the user requests prose, the agent:
 
 ## Use the Source-Integrity Handoff
 
-Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. Follow each data point's permitted-use action. This skill may select, group, order, nest, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
+When source integrity applies, use only its cleared facts, derived values, interpretations, recommendations, and limitations. Apply the drafting action defined by each confidence level. This skill may select, group, order, nest, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
 
-For a separate-call workflow, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output. If a section requires unsupported content, change the architecture or state the evidence limit.
+When strict trace mode applies, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output. If a section requires unsupported content, change the architecture or state the evidence limit.
 
 Treat examples as structural patterns. Do not copy their names, facts, terminology, scenarios, or conclusions into the artifact.
 
@@ -118,8 +117,9 @@ The agent checks the architecture and requested artifact internally and fixes an
 4. No structural rewrite changes a claim's scope, status, or certainty.
 5. Every peer set answers one parent question, performs one role, and uses one logical order.
 6. The outline retains every material support without forcing a preferred count or depth.
-7. No example terminology, framework labels, or self-check appears.
-8. The response matches the requested depth and contains only the requested artifact.
+7. Each sentence makes one claim with a specific subject and active verb; sections carry precise key terms from parent claims through their support.
+8. No example terminology, framework labels, or self-check appears.
+9. The response matches the requested depth and contains only the requested artifact.
 
 ## References
 

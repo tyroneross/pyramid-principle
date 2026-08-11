@@ -1,14 +1,13 @@
 ---
 name: pyramid-short-form
 description: Use when user asks to draft an email, memo, executive summary, one-pager, BLUF, Slack update, or status note using the pyramid principle. Answer-first prose under ~500 words.
-version: 0.1.1
 ---
 
 # Pyramid Short-Form
 
 ## Purpose
 
-Draft a requested short-form artifact of about 500 words or fewer. When the task includes sources, facts, or data, receive the internal claim packet produced by a separate `pyramid-source-integrity` pre-check. Then load `pyramid-principle-core` for structure.
+Draft a requested short-form artifact of about 500 words or fewer. Load `pyramid-principle-core` for structure and direct language. Add a `pyramid-source-integrity` check when facts or data materially affect the output; receive a claim packet only when strict trace mode applies.
 
 This skill drafts. It does not explain the Pyramid Principle or audit existing writing.
 
@@ -39,7 +38,7 @@ Before drafting, the agent identifies:
 
 1. **Reader question:** What must the artifact answer for its reader?
 2. **Requested outcome:** Does the user want facts, a recommendation, a decision, an ask, or a status update?
-3. **Cleared claims:** Which facts, calculations, inferences, recommendations, and limitations did `pyramid-source-integrity` permit the artifact to use, and what source, confidence, and permitted-use record accompanies each data point?
+3. **Cleared claims:** When source integrity applies, which facts, calculations, inferences, recommendations, and limitations may the artifact use, and what source, locator, confidence, and reason accompany each data point?
 4. **Medium:** Email, memo, one-pager, Slack, or another short form?
 5. **Constraints:** Audience, length, tone, deadline, and sensitivity.
 
@@ -61,9 +60,9 @@ The agent performs these steps in order:
 
 ## Use the Source-Integrity Handoff
 
-Use only the facts, derived values, interpretations, recommendations, and limitations cleared by `pyramid-source-integrity`. Follow each data point's permitted-use action. This skill may select, group, order, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
+When source integrity applies, use only its cleared facts, derived values, interpretations, recommendations, and limitations. Apply the drafting action defined by each confidence level. This skill may select, group, order, and express the claims; it must not assign or upgrade confidence, replace a source, weaken a locator, or change numbers, scope, status, or certainty.
 
-For a separate-call workflow, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output.
+When strict trace mode applies, create a trace draft by appending the packet's claim ID to every factual or evaluative clause. A clause with no claim ID cannot appear. Hand the trace draft and original packet to a separate `pyramid-source-integrity` post-check, which validates the whole clause and strips the IDs. This skill must not approve its own factual output.
 
 Treat examples in `references/` as structural patterns. Do not copy their names, facts, scenarios, or conclusions into the artifact.
 
@@ -84,8 +83,9 @@ The agent checks the draft internally and fixes any failure:
 3. Every peer answers one parent question and performs one role.
 4. The draft retains all material support without forcing a preferred count.
 5. The format exposes the logic instead of decorating it.
-6. No example terminology or unsupported content appears.
-7. The response contains only the requested artifact. It does not print `Answer:`, `Support:`, `SCQA:`, `Governing thought:`, `Next step:`, or the self-check.
+6. Each sentence makes one claim with a specific subject and active verb; each sentence or bullet connects clearly to its parent or preceding sentence.
+7. No example terminology or unsupported content appears.
+8. The response contains only the requested artifact. It does not print `Answer:`, `Support:`, `SCQA:`, `Governing thought:`, `Next step:`, or the self-check.
 
 ## References
 

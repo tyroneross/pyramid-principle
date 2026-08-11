@@ -1,7 +1,6 @@
 ---
 name: pyramid-principle-core
 description: Use when user asks about the Pyramid Principle, Minto, SCQA, MECE, governing thought, key line, vertical or horizontal logic, deductive or inductive reasoning, or answer-first structure. Canonical rule library for sibling writing skills.
-version: 0.1.0
 ---
 
 # Pyramid Principle Core
@@ -32,7 +31,20 @@ Every sibling skill applies these rules before its medium-specific guidance:
 4. **The agent uses examples as structural patterns, not task content.** It does not copy an example's names, facts, scenario, terminology, or conclusion unless the user supplied them for the current task.
 5. **The agent returns the requested artifact by default.** It does not include framework labels, drafting notes, assumptions, or self-check commentary unless the user requests them or unresolved ambiguity prevents a reliable artifact.
 
-`pyramid-source-integrity` separately owns fact checking, source validation, calculations, data scope, source locators, confidence, and permitted use. The structural layer uses the cleared claim set but does not assign, reclassify, or strengthen confidence or claims.
+`pyramid-source-integrity` separately owns fact checking, source validation, calculations, data scope, source locators, and confidence. The structural layer applies the drafting action defined by the confidence level but does not assign, reclassify, or strengthen confidence or claims.
+
+## Direct Language and Logical Flow
+
+Apply these rules from the governing thought down to each sentence:
+
+1. **Give each sentence one job.** State one main claim per sentence. Split a sentence when two claims require different support or answer different questions.
+2. **Name the actor and action.** Prefer `[specific actor] [active verb] [specific outcome]` over vague nouns, passive constructions, nominalizations, or weak verbs. Write `Legal approved the contract`, not `Approval of the contract was completed`.
+3. **Use evidence instead of decoration.** Replace vague adjectives and adverbs with validated measures when the source provides them. Treat evaluative modifiers and causal verbs as claims: keep them only when evidence supports their exact meaning. If no measure exists, use a precise factual description or remove the modifier; never invent data to make the sentence sound specific.
+4. **Open with the sentence's logical subject.** Lead with the actor for accountability, the result for an outcome, the cause for a diagnosis, the metric when evidence leads, or the contrast for a tradeoff.
+5. **Connect given information to new information.** Begin each sentence with a term or result the reader already knows, then end with the new point. Make the next sentence pick up that point when it continues the same line of thought.
+6. **Preserve key terms through the hierarchy.** A child claim repeats or precisely resolves the parent term it supports. Do not swap in decorative synonyms that make the reader infer whether two terms mean the same thing.
+7. **Make bullets parallel and explicit.** Each peer bullet states a complete claim, exposes the same logical role, and uses a consistent grammatical pattern. Prefer a specific noun plus an active verb.
+8. **Show the real connection.** Use `because`, `therefore`, `however`, or sequence terms only when they state the actual relationship. A connector cannot repair missing evidence or a broken inference.
 
 ## Three Rules of a Valid Pyramid
 

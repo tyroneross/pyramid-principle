@@ -1,7 +1,6 @@
 ---
 name: pyramid-audit
 description: Use when user provides existing writing and asks for structural critique against the Pyramid Principle. Produces rule-grounded findings and ranked fixes without rewriting.
-version: 0.1.0
 ---
 
 # Pyramid Audit

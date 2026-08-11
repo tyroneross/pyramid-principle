@@ -1,12 +1,12 @@
 # Structure and Source-Integrity Regression Cases
 
-Use these cases after changing the source-integrity, core, or sibling skills. When a case contains facts, sources, or data, run three distinct stages: a `pyramid-source-integrity` pre-check that creates the internal claim packet, the named structural skill, and a `pyramid-source-integrity` post-check against the draft and original packet. When testing a smaller drafting model, run source checks with the strongest available verification model and use deterministic tools for material calculations.
+Use these cases after changing the source-integrity, core, or sibling skills. Use the light source check unless a case requests `use only these facts`, a claim packet, or another strict-mode condition. In strict mode, run three separate stages: a source-integrity pre-check, the named structural skill, and a source-integrity post-check. When testing a smaller drafting model, use the strongest available verification model for source checks and deterministic tools for material calculations.
 
 ## Source-integrity criteria
 
-1. Before structuring, the agent gives every factual claim and derived value a source ID that resolves to a complete source-register record, exact locator, confidence level, confidence reason, and permitted-use action. A bare label such as `user input`, `company data`, `derived`, or a dash fails.
+1. Before structuring, the agent gives every factual claim and derived value a specific source, exact locator, confidence level, and confidence reason. A bare label such as `user input`, `company data`, `derived`, or a dash fails. Strict mode also requires stable IDs and a complete source register.
 2. High-confidence points may be stated directly; Medium points require attribution or a limitation; Low points stay out of central support; Unverified points are excluded as facts. The structural skill does not assign or upgrade these levels.
-3. A derived value records its input claim IDs, formula or query, tool, validation result, and rounding. Its confidence never exceeds its lowest-confidence required input.
+3. A derived value records its inputs, formula or query, tool, validation result, and rounding. Its confidence never exceeds its lowest-confidence required input. Strict mode uses stable input claim IDs.
 4. Before structuring, the agent checks every material claim against the case sources. When the prompt says `use only these facts`, the artifact uses only the supplied decision, supported facts, and valid derived calculations; it adds no new interpretation or prediction.
 5. The agent preserves every number's value, unit, denominator, population, period, and qualifier. If it derives a value, the source-integrity check can reproduce the formula and rounding.
 6. The agent does not attribute an aggregate to a subgroup, compare incompatible data, fill a missing value, convert correlation into cause, or present an unverified claim as fact.
@@ -20,6 +20,9 @@ Use these cases after changing the source-integrity, core, or sibling skills. Wh
 2. Every peer set answers one parent question and performs one logical role. Different topics do not fail merely because their nouns differ.
 3. No names, facts, scenarios, or conclusions from skill examples appear unless the case supplies them.
 4. The response contains the requested artifact, not drafting notes, framework labels, assumptions, claim ledgers, or self-check commentary.
+5. Each sentence makes one main claim and uses a specific subject with an active verb when the meaning allows.
+6. Validated measures replace vague adjectives or adverbs when the source supplies them; the artifact does not invent data to sound precise.
+7. Supporting statements repeat or precisely resolve the parent claim's key terms, and each sentence begins from information the reader already has before adding the new point.
 
 ## Case 1 — Short-form factual update
 
@@ -171,8 +174,52 @@ Use these cases after changing the source-integrity, core, or sibling skills. Wh
 - The source register defines `SRC-1` with the supplied filename and capture date and defines `SRC-2` as the current prompt's second supplied fact.
 - The 72% point names `SRC-1` and retains the row and columns as its local locator; together, the source record and locator identify the complete evidence.
 - The 80% point names `SRC-2` and locates the current prompt's second supplied fact; it does not use bare `user input` as the source.
-- Both supplied points receive `Medium`, a reason that they were supplied but not independently checked, and `state with attribution or limitation`.
+- Both supplied points receive `Medium` with a reason that they were supplied but not independently checked. The output attributes the source or states the limitation.
 - The 8-percentage-point value uses a calculation source ID that resolves in the source register and retains input IDs for both supplied points, formula `80% - 72% = 8 percentage points`, the named deterministic tool and validation status, and confidence no higher than `Medium`. Model or mental arithmetic does not count as the tool.
-- The derived point's permitted use is `state with attribution or limitation`; passing arithmetic validation does not upgrade Medium source confidence to `state directly`.
+- The derived point remains `Medium`; passing arithmetic validation does not authorize direct, unqualified presentation.
 - The calculated point's integrity status is `Derived`, not `Supported`.
-- The trace does not assign numerical confidence percentages or let the structural layer change confidence.
+- The trace does not assign numerical confidence percentages, repeat the confidence action in a `permitted use` field, or let the structural layer change confidence.
+
+## Case 11 — Specific language without invented causation
+
+**Load:** `pyramid-source-integrity`, `pyramid-principle-core`, `pyramid-short-form`
+
+**Prompt:**
+
+> Rewrite this status note using only the cleared facts. Vague note: `The plant improvement initiative is progressing significantly. The operational team successfully made meaningful process improvements. Some vendor issues are being actively addressed.` Cleared facts: In May, the maintenance team changed work-order routing at the Dayton plant. Median approval time fell from 6 days to 4 days across 120 work orders. Procurement is reviewing two supplier contracts. The supplied facts do not establish that the routing change caused the approval-time decline or that the contract review addresses an identified issue.
+
+**Case-specific checks:**
+
+- The note names the maintenance team, Dayton plant, work-order routing, approval time, work-order population, procurement, and supplier contracts.
+- It replaces `significantly`, `successfully`, and `meaningful` with the supplied facts rather than another adjective.
+- It does not claim that routing reduced approval time or that procurement is resolving a vendor problem.
+- Each sentence makes one main claim with an active verb.
+
+## Case 12 — Parent-to-bullet term continuity
+
+**Load:** `pyramid-principle-core`, `pyramid-short-form`
+
+**Prompt:**
+
+> Write a short operational finding followed by three complete-sentence bullets. Finding: Three control gaps add four days to monthly close. Supplied supports: Finance analysts manually reconcile vendor codes, adding two days. Regional teams submit files in four formats, adding one day. The controller approves exceptions after close, adding one day. Add no facts.
+
+**Case-specific checks:**
+
+- The finding appears before the three supports.
+- Every bullet states one control gap, names the actor, uses an active verb, and retains its measured delay.
+- The bullets use one grammatical pattern and perform the same logical role.
+- The wording keeps `control gaps` and `monthly close` logically visible rather than replacing them with vague synonyms.
+
+## Case 13 — Given-to-new sentence flow
+
+**Load:** `pyramid-principle-core`, `pyramid-short-form`
+
+**Prompt:**
+
+> Rewrite this paragraph so each sentence connects logically to the next. Original: `Customer wait time rose in June. The scheduling team changed the booking rules. Forty appointments moved to the following week. The clinic should review the rule change.` Cleared relationship: The booking-rule change moved 40 appointments to the following week, which increased June wait time. The clinic should review that rule change.
+
+**Case-specific checks:**
+
+- The first sentence states the supplied cause and measured result without adding a new cause or degree.
+- The next sentence picks up `booking-rule change` before stating the review action.
+- The paragraph uses no ornamental synonym that obscures whether the same rule change is under discussion.
