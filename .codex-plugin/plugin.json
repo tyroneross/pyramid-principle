@@ -2,7 +2,8 @@
   "name": "pyramid-principle",
   "description": "Barbara Minto's Pyramid Principle with separate source-integrity checks for professional writing.",
   "author": {
-    "name": "Tyrone Ross"
+    "name": "Tyrone Ross",
+    "url": "https://github.com/tyroneross"
   },
   "repository": "https://github.com/tyroneross/pyramid-principle",
   "license": "Apache-2.0",
@@ -27,5 +28,6 @@
       "Read",
       "Write"
     ]
-  }
+  },
+  "homepage": "https://github.com/tyroneross/pyramid-principle"
 }
