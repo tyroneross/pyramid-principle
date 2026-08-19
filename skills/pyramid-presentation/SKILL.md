@@ -1,6 +1,6 @@
 ---
 name: pyramid-presentation
-description: Use when user asks to structure, storyline, or outline a presentation, deck, slides, ghost deck, or talk using the pyramid principle. Produces slide-by-slide assertion headlines.
+description: Builds a presentation storyline with slide-by-slide assertion headlines using the pyramid principle. Use when the user wants a deck, slides, ghost deck, or talk structured or outlined. Not for critiquing an existing deck without rewriting it; use `pyramid-audit` instead.
 ---
 
 # Pyramid Presentation

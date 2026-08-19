@@ -1,6 +1,6 @@
 ---
 name: pyramid-short-form
-description: Use when user asks to draft an email, memo, executive summary, one-pager, BLUF, Slack update, or status note using the pyramid principle. Answer-first prose under ~500 words.
+description: Drafts answer-first short-form writing (email, memo, executive summary, one-pager, BLUF, Slack update, status note) under ~500 words using the pyramid principle. Use when the user wants a quick draft, not a critique. Not for reviewing existing text without rewriting; use `pyramid-audit` instead. Not for multi-section reports; use `pyramid-long-form` instead.
 ---
 
 # Pyramid Short-Form
