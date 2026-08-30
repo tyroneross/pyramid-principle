@@ -1,6 +1,7 @@
 ---
 name: pyramid-source-integrity
 description: Use to verify sources, factual claims, calculations, or data before or after Pyramid Principle writing. Load for explicit fact checks, strict source-bound work, material data, or consequential factual output; skip ordinary structure-only writing.
+user-invocable: false
 ---
 
 # Pyramid Source Integrity

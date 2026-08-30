@@ -1,6 +1,7 @@
 ---
 name: pyramid-long-form
 description: Drafts or restructures a multi-section document (report, brief, proposal, whitepaper, strategy doc, research writeup) using the Pyramid Principle. Use when the user wants a new document built or an existing one reorganized. Not for critiquing a draft without rewriting it; use `pyramid-audit` instead. Not for single-page notes under 500 words; use `pyramid-short-form` instead.
+user-invocable: false
 ---
 
 # Pyramid Long-Form

@@ -1,6 +1,7 @@
 ---
 name: pyramid-audit
 description: Critiques existing writing against the Pyramid Principle and returns ranked findings, not a rewrite. Use when the user has a draft and wants it reviewed or diagnosed. Not for drafting new content in a specific format; use `pyramid-long-form`, `pyramid-presentation`, or `pyramid-short-form` instead.
+user-invocable: false
 ---
 
 # Pyramid Audit
