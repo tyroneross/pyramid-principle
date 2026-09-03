@@ -31,6 +31,10 @@ jobs:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
+      # 11.5.1 is the documented floor for trusted publishing, and Node 22
+      # ships npm 10.x — below it. https://docs.npmjs.com/trusted-publishers/
+      - name: Use npm >= 11.5.1 (trusted-publishing floor)
+        run: npm install -g npm@^11.5.1
 
       - name: Verify release tag matches package.json version
         if: github.event_name == 'release'
@@ -45,17 +49,16 @@ jobs:
       - name: Verify package contents
         run: npm pack --dry-run --registry https://registry.npmjs.org
 
+        # No NODE_AUTH_TOKEN. A token in the environment takes PRECEDENCE over
+        # OIDC, so leaving one here means the job never exercises trusted
+        # publishing even with id-token: write set.
       - name: Publish dry run
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
         run: npm publish --dry-run --provenance --access public --registry https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to npmjs with provenance
         if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
         run: npm publish --provenance --access public --registry https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Verify npmjs provenance metadata
         if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true')
