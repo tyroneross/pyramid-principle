@@ -1,0 +1,77 @@
+# SPDX-FileCopyrightText: 2025-2026 Tyrone Ross, Jr <46267523+tyroneross@users.noreply.github.com>
+# SPDX-License-Identifier: Apache-2.0
+name: release-please
+
+# Keeps ONE release pull request continuously current: every push to main adds its
+# Conventional Commit to the pending changelog and recomputes the next version. The
+# PR is the always-visible answer to "what is queued to ship". Nothing publishes
+# here -- the weekly cut in release-weekly-merge.yml merges that PR, which is what
+# creates the GitHub Release.
+#
+# WHY THIS EXISTS. This repo's publish path was unreachable by construction:
+# publishing waits on a GitHub Release, and nothing in the repo ever created one.
+# Cutting a release was a manual GitHub-UI step that stopped happening.
+#
+# Ported from build-loop's .github/workflows/release-please.yml. Keep the two in
+# sync; the porting delta is the dispatch step below and CI_WORKFLOW_FILE in
+# release-weekly-merge.yml.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  # Required by the publish bridge below (`gh workflow run`).
+  actions: write
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # THE BRIDGE. GitHub docs, "Triggering a workflow": events triggered by the
+      # GITHUB_TOKEN do not create a new workflow run. The documented exceptions are
+      # `workflow_dispatch` and `repository_dispatch` (always cascade) and
+      # `pull_request` opened/synchronize/reopened. `release` is NOT one of them, so
+      # the release created above will NOT start this repo's publish workflows on
+      # their own trigger. Left unhandled this fails in the worst possible way:
+      # GitHub Releases appear on the releases page while npm receives nothing, so
+      # the symptom looks fixed while distribution stays broken.
+      #
+      # Dispatching workflow_dispatch explicitly closes the gap with no new
+      # credential. A PAT or GitHub App token would also work and is what GitHub
+      # names first, but both are long-lived credentials to store, scope, and
+      # rotate for a gap this already solves.
+      #
+      # Dispatched at the TAG, not at main: main can move between the release and
+      # this step, and the publish workflows read the version out of the checked-out
+      # package.json. At the tag, that version is the released one by construction.
+      - name: Dispatch publish workflows (GITHUB_TOKEN releases do not cascade)
+        if: steps.release.outputs.release_created == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          echo "Release $TAG created -- dispatching publish workflows at that tag."
+          gh workflow run publish-npm.yml --ref "$TAG" -f dry_run=false
+          gh workflow run publish-npmjs.yml --ref "$TAG" -f dry_run=false
+          echo "Dispatched. Watch: gh run list --workflow=publish-npm.yml --workflow=publish-npmjs.yml"

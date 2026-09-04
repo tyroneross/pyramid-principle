@@ -1,0 +1,122 @@
+# SPDX-FileCopyrightText: 2025-2026 Tyrone Ross, Jr <46267523+tyroneross@users.noreply.github.com>
+# SPDX-License-Identifier: Apache-2.0
+name: Weekly release cut
+
+# ONE RELEASE PER WEEK. release-please keeps its release PR continuously current on
+# every push to main, so what is queued to ship is always visible; this workflow is
+# the only thing that merges it, which is what cuts the GitHub Release.
+#
+# -- CADENCE: edit this single cron line to change the cut --------------------
+#     '0 1 * * 1'  =  Mondays 01:00 UTC  =  Sundays 18:00 America/Los_Angeles (PDT)
+# Cron is UTC-only and does NOT follow DST, so from November to March this lands at
+# Sunday 17:00 local. That drift is accepted rather than fixed, because the choice
+# only needs to be roughly right: never cut on a Friday, and cut at an hour the
+# maintainer is plausibly at the keyboard, so a failed publish is seen the same day
+# instead of sitting red until the next weekend.
+#
+# workflow_dispatch is not optional: an urgent security fix must ship immediately
+# without waiting for the cadence. Run it from the Actions tab or:
+#     gh workflow run release-weekly-merge.yml
+#
+# PORTABLE. Ported from build-loop. Nothing below is repo-specific except the two
+# env values in the job.
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+concurrency:
+  group: release-weekly-merge
+  cancel-in-progress: false
+
+jobs:
+  cut:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      # release-please's default PR label (DEFAULT_LABELS in its manifest.ts).
+      # Matched on the LABEL, never the title -- the title format changes between
+      # action majors, the label has not.
+      RELEASE_PR_LABEL: 'autorelease: pending'
+      # The workflow whose conclusion on main gates the cut. "" disables the guard.
+      # For this repo: the only workflow gating main.
+      CI_WORKFLOW_FILE: verify-manifests.yml
+    steps:
+      - name: Find the open release PR
+        id: find
+        run: |
+          set -euo pipefail
+          PR=$(gh pr list --state open --label "$RELEASE_PR_LABEL" \
+                 --json number --jq '.[0].number // empty')
+          if [ -z "$PR" ]; then
+            echo "No open pull request labelled '$RELEASE_PR_LABEL'."
+            echo "Nothing landed on main since the last cut -- no release this week."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Release PR: #$PR"
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "pr=$PR" >> "$GITHUB_OUTPUT"
+
+      # Guard 1 -- never cut a release out of a red main. The release PR only bumps
+      # a version and a changelog, so main's own result is the meaningful signal
+      # about the code being shipped.
+      - name: Require main to be green
+        if: steps.find.outputs.found == 'true' && env.CI_WORKFLOW_FILE != ''
+        run: |
+          set -euo pipefail
+          CONCLUSION=$(gh api \
+            "repos/$GH_REPO/actions/workflows/$CI_WORKFLOW_FILE/runs?branch=main&status=completed&per_page=1" \
+            --jq '.workflow_runs[0].conclusion // "none"')
+          if [ "$CONCLUSION" != "success" ]; then
+            echo "::error::main's latest $CI_WORKFLOW_FILE run concluded '$CONCLUSION'." \
+                 "Refusing to cut a release from a red main. Fix main, then re-run this" \
+                 "workflow manually: gh workflow run release-weekly-merge.yml"
+            exit 1
+          fi
+          echo "main is green on $CI_WORKFLOW_FILE."
+
+      # Guard 2 -- if any check DID report on the release PR, none of them may be
+      # failing. Zero checks is normal and not a failure: release-please opens its
+      # PR with GITHUB_TOKEN, and a GITHUB_TOKEN-opened PR does not start
+      # `on: pull_request` workflows. Guard 1 is what actually covers the code.
+      - name: Reject a red release PR
+        if: steps.find.outputs.found == 'true'
+        env:
+          PR: ${{ steps.find.outputs.pr }}
+        run: |
+          set -euo pipefail
+          STATES=$(gh pr checks "$PR" --json state --jq '.[].state' 2>/dev/null || true)
+          if [ -z "$STATES" ]; then
+            echo "No checks reported on #$PR (expected for a GITHUB_TOKEN-opened PR)."
+            exit 0
+          fi
+          # ACTION_REQUIRED is deliberately NOT fatal. A release-please PR is opened
+          # by a bot, and GitHub parks its workflow runs awaiting manual approval.
+          # Treating that as red would block the weekly cut forever on a state no
+          # human ever clears. Guard 1 above is what protects the shipped code.
+          BAD=$(printf '%s\n' "$STATES" \
+                | grep -cE '^(FAILURE|ERROR|CANCELLED|TIMED_OUT)$' || true)
+          if [ "$BAD" -gt 0 ]; then
+            echo "::error::$BAD failing check(s) on release PR #$PR -- not merging."
+            gh pr checks "$PR" || true
+            exit 1
+          fi
+          echo "All reported checks on #$PR are passing."
+
+      - name: Merge the release PR
+        if: steps.find.outputs.found == 'true'
+        env:
+          PR: ${{ steps.find.outputs.pr }}
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR" --squash
+          echo "Merged #$PR. release-please will tag and publish the GitHub Release on"
+          echo "the resulting push to main, then dispatch the publish workflows."
