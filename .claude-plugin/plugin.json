@@ -1,7 +1,6 @@
 {
   "name": "pyramid-principle",
-  "version": "0.1.3",
-  "description": "Barbara Minto's Pyramid Principle with separate source-integrity checks for professional writing",
+  "description": "Reports and memos bury the answer under background, so readers must reconstruct the argument and decisions stall. This plugin applies Barbara Minto's Pyramid Principle (answer first, MECE-grouped support) and keeps a separate source-integrity layer that requires a specific source, locator, and confidence for every fact. Your reader gets the decision in the first sentence and can trust every number under it.",
   "author": {
     "name": "Tyrone Ross",
     "url": "https://github.com/tyroneross"

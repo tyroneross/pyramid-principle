@@ -1,6 +1,12 @@
 # pyramid-principle
 
-Turn source material into decision-ready professional writing: validate the claims, state the answer before support, and group the support logically.
+Reports and memos bury the answer under background, so readers must reconstruct the argument and decisions stall. This plugin applies Barbara Minto's Pyramid Principle (answer first, MECE-grouped support) and keeps a separate source-integrity layer that requires a specific source, locator, and confidence for every fact. Your reader gets the decision in the first sentence and can trust every number under it.
+
+## Start here
+
+You do not type a command. Describe the writing task in plain language and the right skill loads itself: "draft this as an exec summary", "structure this report", "audit this memo for structure", "fact-check these claims first". The routing table below shows which phrasing reaches which skill.
+
+To report a bug or request a feature: **`/pyramid-principle:submit-feedback`**.
 
 ## What it does
 
@@ -64,7 +70,7 @@ The plugin can check consistency with supplied material, require source and conf
 
 ## Status
 
-v0.1.2 — composable Codex + Claude packaging. 6 source anchors ship with this version; additional anchors planned for v0.2.
+Composable Codex + Claude packaging. 6 source anchors ship today; additional anchors planned next. The plugin manifests omit `version` by design — Claude Code resolves the installed version to the git commit SHA, so every push ships and no hand-pinned number can go stale. `package.json` carries the npm version.
 
 ## License
 
