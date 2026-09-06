@@ -30,6 +30,7 @@ permissions:
   contents: write
   pull-requests: write
   checks: read
+  actions: write
 
 concurrency:
   group: release-weekly-merge
@@ -118,5 +119,17 @@ jobs:
         run: |
           set -euo pipefail
           gh pr merge "$PR" --squash
-          echo "Merged #$PR. release-please will tag and publish the GitHub Release on"
-          echo "the resulting push to main, then dispatch the publish workflows."
+          echo "Merged #$PR."
+
+      # A push made with GITHUB_TOKEN never creates a workflow run, so the merge
+      # above does NOT trigger release-please on its own. Observed on NavGator
+      # 2026-09-06: release PR #7 merged, zero runs for the merge commit, no
+      # Release, no publish. workflow_dispatch IS delivered for GITHUB_TOKEN
+      # callers, so dispatch release-please explicitly; it tags, creates the
+      # GitHub Release, and bridges to the publish workflows the same way.
+      - name: Dispatch release-please (a GITHUB_TOKEN merge does not cascade)
+        if: steps.find.outputs.found == 'true'
+        run: |
+          set -euo pipefail
+          gh workflow run release-please.yml --ref main
+          echo "Dispatched release-please on main. Watch: gh run list --workflow=release-please.yml"
